@@ -5,5 +5,5 @@
 # your plugin's accompanying scripts.
 #
 
-@load-sigs dpd.sig
-@load main.zeek
+@load-sigs ./dpd.sig
+@load ./main.zeek
