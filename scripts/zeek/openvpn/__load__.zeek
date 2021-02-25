@@ -5,6 +5,5 @@
 # your plugin's accompanying scripts.
 #
 
-# @load ./bar
-@load-sigs openvpn/dpd.sig
-@load openvpn/main.zeek
+@load-sigs dpd.sig
+@load main.zeek
