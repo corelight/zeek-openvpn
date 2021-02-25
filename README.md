@@ -26,7 +26,7 @@ sudo zkg install zeek-openvpn
 Now in any Zeek script, just load the plugin and it "just works":
 
 ```
-@load Zeek/OpenVPN
+@load zeek/openvpn
 ```
 
 New events for this plugin are found in [events.bif](src/events.bif).
