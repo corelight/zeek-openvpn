@@ -1,6 +1,6 @@
 #pragma once
 
-#include "zeek/analyzer/protocol/tcp/TCP.h"
+#include "analyzer/protocol/tcp/TCP.h"
 
 #include "events.bif.h"
 #include "types.bif.h"

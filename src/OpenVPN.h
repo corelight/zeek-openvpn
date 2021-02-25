@@ -1,6 +1,6 @@
 #pragma once
 
-#include "zeek/analyzer/protocol/udp/UDP.h"
+#include "analyzer/protocol/udp/UDP.h"
 
 #include "events.bif.h"
 #include "types.bif.h"
