@@ -4,6 +4,9 @@
 #include <zeek/plugin/Plugin.h>
 #include <zeek/analyzer/Component.h>
 #include "OpenVPN.h"
+#include "OpenVPNHMAC.h"
+#include "OpenVPNTCP.h"
+#include "OpenVPNTCPHMAC.h"
 
 namespace plugin {
 namespace zeek_openvpn {
