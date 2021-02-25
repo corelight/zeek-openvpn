@@ -56,7 +56,7 @@ void OpenVPN_Analyzer::DeliverStream(int len, const u_char* data, bool orig)
 		}
 	catch ( const binpac::Exception& e )
 		{
-		ProtocolViolation(util::fmt("Binpac exception: %s", e.c_msg()));
+		ProtocolViolation(fmt("Binpac exception: %s", e.c_msg()));
 		}
 	}
 
