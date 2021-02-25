@@ -2,4 +2,14 @@
 zeek::openvpn
 =================================
 
-<Insert plugin documentation here.>
+A plugin to detect and parse OpenVPN
+in the following modes:
+
+- UDP w/ TLS
+- UDP w/ TLS & TLS Auth
+- TCP w/ TLS
+- TCP w/ TLS & TLS Auth
+
+So far I am unable to support:
+
+- Shared key mode for UDP or TCP.
