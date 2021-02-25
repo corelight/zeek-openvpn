@@ -7,5 +7,3 @@
 # in scripts/<plugin-namespace>/<plugin-name>/__load__.zeek. That's processed
 # only on explicit `@load <plugin-namespace>/<plugin-name>`.
 #
-@load-sigs openvpn/dpd.sig
-@load openvpn/main.zeek

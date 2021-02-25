@@ -6,4 +6,5 @@
 #
 
 # @load ./bar
-
+@load-sigs openvpn/dpd.sig
+@load openvpn/main.zeek
