@@ -1,6 +1,6 @@
 module OpenVPN;
 export {
-	type OpenVPN::ControlMsg: record {
+	type ControlMsg: record {
 		## Opcode
 		opcode					:	count;
 		## Key ID
@@ -19,7 +19,7 @@ export {
 		data_len				:	count;
 	};
 
-	type OpenVPN::DataMsg: record {
+	type DataMsg: record {
 		## Opcode
 		opcode					:	count;
 		## Key ID
