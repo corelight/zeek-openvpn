@@ -1,0 +1,4 @@
+build
+.state
+.idea/
+cmake-build-debug/

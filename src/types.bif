@@ -1,0 +1,4 @@
+module OpenVPN;
+
+type OpenVPN::ControlMsg: record;
+type OpenVPN::DataMsg: record;
