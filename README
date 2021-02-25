@@ -10,6 +10,4 @@ in the following modes:
 - TCP w/ TLS
 - TCP w/ TLS & TLS Auth
 
-So far I am unable to support:
-
-- Shared key mode for UDP or TCP.
+So far this will not detect shared key mode for UDP or TCP.
