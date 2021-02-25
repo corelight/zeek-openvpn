@@ -6,7 +6,7 @@ project(ZeekPluginopenvpn)
 include(ZeekPlugin)
 
 zeek_plugin_begin(zeek openvpn)
-zeek_plugin_cc(src/Plugin.cc src/OpenVPN.cc src/OpenVPNHMAC.cc)
+zeek_plugin_cc(src/Plugin.cc src/OpenVPN.cc src/OpenVPNHMAC.cc src/OpenVPNTCP.cc src/OpenVPNTCPHMAC.cc)
 zeek_plugin_bif(src/types.bif src/events.bif)
 zeek_plugin_pac(src/openvpntcphmac.pac src/openvpntcphmac-protocol.pac src/openvpntcphmac-analyzer.pac)
 zeek_plugin_pac(src/openvpntcp.pac src/openvpntcp-protocol.pac src/openvpntcp-analyzer.pac)
