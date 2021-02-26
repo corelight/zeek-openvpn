@@ -3,7 +3,7 @@
 #empty_field	(empty)
 #unset_field	-
 #path	conn
-#open	2021-02-25-20-12-28
+#open	2021-02-26-14-17-34
 #fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	service	duration	orig_bytes	resp_bytes	conn_state	local_orig	local_resp	missed_bytes	history	orig_pkts	orig_ip_bytes	resp_pkts	resp_ip_bytes	tunnel_parents
 #types	time	string	addr	port	addr	port	enum	string	interval	count	count	string	bool	bool	count	string	count	count	count	count	set[string]
 1613755354.147843	Cb7w0T1dHZUPXzdgRi	192.168.88.3	40010	192.168.88.1	53	udp	dns	0.050225	58	182	SF	-	-	0	Dd	1	86	1	210	-
@@ -24,7 +24,7 @@
 1613755379.850041	CgYh1L1mwsOxSqVBu9	192.168.88.3	58366	192.168.88.1	53	udp	dns	0.042493	42	130	SF	-	-	0	Dd	1	70	1	158	-
 1613755380.196015	CPEPje2CwXXxGGPo27	192.168.88.3	40494	192.168.88.1	53	udp	dns	0.035770	53	113	SF	-	-	0	Dd	1	81	1	141	-
 1613755381.158956	CIWOQa2vaf6TxyZ2Jg	192.168.88.3	38868	192.168.88.1	53	udp	dns	0.012310	97	97	SF	-	-	0	Dd	2	153	2	153	-
-1613755381.172648	CqyxRG6TRKYW41Zz5	192.168.88.3	57744	192.168.88.1	53	udp	dns	0.006153	97	97	SF	-	-	0	Dd	2	153	2	153	-
+1613755381.172648	CqyxRG6TRKYW41Zz5	192.168.88.3	57744	192.168.88.1	53	udp	openvpn,dns	0.006153	97	97	SF	-	-	0	Dd	2	153	2	153	-
 1613755381.180110	C3HR3r12iwKiqXa9c	192.168.88.3	40049	192.168.88.1	53	udp	dns	0.010288	191	180	SF	-	-	0	Dd	2	247	2	236	-
 1613755384.636042	CalQkN3MoYim6AEEe4	192.168.88.3	56907	192.168.88.1	53	udp	dns	0.562157	58	119	SF	-	-	0	Dd	1	86	1	147	-
 1613755381.192183	C823dt2fd3qQ26XyU	192.168.88.3	43760	192.168.88.1	53	udp	dns	4.015969	191	180	SF	-	-	0	Dd	2	247	2	236	-
@@ -237,4 +237,4 @@
 1613755413.157760	COJL3m2IFflzZ1Cvdk	192.168.88.3	8	217.138.193.164	0	icmp	-	0.211254	56	56	OTH	-	-	0	-	1	84	1	84	-
 1613755413.156199	CBMc5Bq8xeq3TqHyl	192.168.88.3	8	217.138.211.248	0	icmp	-	0.099736	56	56	OTH	-	-	0	-	1	84	1	84	-
 1613755413.155902	CQKymemsGWxk8qNhi	192.168.88.3	8	217.138.221.74	0	icmp	-	0.137668	56	56	OTH	-	-	0	-	1	84	1	84	-
-#close	2021-02-25-20-12-28
+#close	2021-02-26-14-17-34
