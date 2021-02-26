@@ -1,6 +1,6 @@
 module OpenVPN;
 
-const ports = { 1194/udp, 1195/udp, 1196/udp, 1197/udp, 1198/udp, 8080/udp };
+const ports = { 443/udp, 1194/udp, 1195/udp, 1196/udp, 1197/udp, 1198/udp, 8080/udp };
 const tcp_ports = { 1194/tcp, 1195/tcp, 1196/tcp, 1197/tcp, 1198/tcp };
 
 redef likely_server_ports += { ports, tcp_ports };
