@@ -1,6 +1,7 @@
 signature dpd_openvpn_udp_client {
   ip-proto == udp
   payload /\x38.{8}\x00\x00\x00\x00\x00/
+  requires-reverse-signature dpd_openvpn_udp_server
   enable "openvpn"
 }
 
@@ -14,6 +15,7 @@ signature dpd_openvpn_udp_server {
 signature dpd_openvpnhmac_udp_client {
   ip-proto == udp
   payload /\x38.{36}\x00\x00\x00\x00\x00/
+  requires-reverse-signature dpd_openvpnhmac_udp_server
   enable "openvpn"
 }
 
@@ -27,6 +29,7 @@ signature dpd_openvpnhmac_udp_server {
 signature dpd_openvpn_tcp_client {
   ip-proto == tcp
   payload /..\x38.{8}\x00\x00\x00\x00\x00/
+  requires-reverse-signature dpd_openvpn_tcp_server
   tcp-state originator
   enable "openvpn"
 }
@@ -42,6 +45,7 @@ signature dpd_openvpn_tcp_server {
 signature dpd_openvpnhmac_tcp_client {
   ip-proto == tcp
   payload /..\x38.{36}\x00\x00\x00\x00\x00/
+  requires-reverse-signature dpd_openvpnhmac_tcp_server
   tcp-state originator
   enable "openvpn"
 }
@@ -49,7 +53,7 @@ signature dpd_openvpnhmac_tcp_client {
 signature dpd_openvpnhmac_tcp_server {
   ip-proto == tcp
   payload /..\x40.{37}/
-  requires-reverse-signature dpd_openvpn_tcp_client
+  requires-reverse-signature dpd_openvpnhmac_tcp_client
   tcp-state responder
   enable "openvpn"
 }
