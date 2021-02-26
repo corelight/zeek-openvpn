@@ -52,6 +52,19 @@ signature dpd_openvpn_tcp_server {
   enable "openvpn"
 }
 
+signature dpd_openvpn_datav1_tcp_client {
+  ip-proto == tcp
+  payload /..\x30/
+  requires-reverse-signature dpd_openvpn_datav1_tcp_server
+  enable "openvpn"
+}
+
+signature dpd_openvpn_datav1_tcp_server {
+  ip-proto == tcp
+  payload /..\x30/
+  enable "openvpn"
+}
+
 signature dpd_openvpnhmac_tcp_client {
   ip-proto == tcp
   payload /..\x38.{36}\x00\x00\x00\x00\x00/
