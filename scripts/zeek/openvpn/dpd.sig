@@ -1,5 +1,6 @@
 signature dpd_openvpn_udp_client {
   ip-proto == udp
+  dst-port != 53
   payload /\x38.{8}\x00\x00\x00\x00\x00/
   enable "openvpn"
 }
