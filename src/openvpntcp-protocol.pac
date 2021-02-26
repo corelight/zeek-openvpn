@@ -11,7 +11,7 @@ enum Openvpn_Opcode {
 };
 
 type OpenVPNPDU(is_orig: bool) = record {
-	records: OpenVPNRecord(is_orig) &transient;
+	records: OpenVPNRecord(is_orig)[] &transient;
 };
 
 type OpenVPNRecord(is_orig: bool) = record {
