@@ -25,6 +25,7 @@ signature dpd_openvpnhmac_udp_server {
 signature dpd_openvpn_tcp_client {
   ip-proto == tcp
   payload /..\x38.{8}\x00\x00\x00\x00\x00/
+  tcp-state established
   enable "openvpn"
 }
 
