@@ -1,7 +1,6 @@
 signature dpd_openvpn_udp_client {
   ip-proto == udp
   payload /\x38.{8}\x00\x00\x00\x00\x00/
-  requires-reverse-signature dpd_openvpn_udp_server
   enable "openvpn"
 }
 
