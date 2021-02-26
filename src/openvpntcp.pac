@@ -24,4 +24,4 @@ flow OpenVPN_Flow(is_orig: bool) {
 	datagram = OpenVPNPDU(is_orig) withcontext(connection, this);
 };
 
-%include openvpntcp-analyzer.pac
+%include openvpn-analyzer.pac
