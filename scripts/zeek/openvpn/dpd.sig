@@ -25,27 +25,23 @@ signature dpd_openvpnhmac_udp_server {
 signature dpd_openvpn_tcp_client {
   ip-proto == tcp
   payload /..\x38.{8}\x00\x00\x00\x00\x00/
-  tcp-state originator
 }
 
 signature dpd_openvpn_tcp_server {
   ip-proto == tcp
   payload /..\x40.{9}/
   requires-reverse-signature dpd_openvpn_tcp_client
-  tcp-state responder
   enable "openvpn"
 }
 
 signature dpd_openvpnhmac_tcp_client {
   ip-proto == tcp
   payload /..\x38.{36}\x00\x00\x00\x00\x00/
-  tcp-state originator
 }
 
 signature dpd_openvpnhmac_tcp_server {
   ip-proto == tcp
   payload /..\x40.{37}/
   requires-reverse-signature dpd_openvpnhmac_tcp_client
-  tcp-state responder
   enable "openvpn"
 }
