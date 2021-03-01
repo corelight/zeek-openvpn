@@ -12,3 +12,4 @@ export {
 		[8] = "P_CONTROL_HARD_RESET_SERVER_V2",
 		[9] = "P_DATA_V2",
 	} &default = function(n: count): string { return fmt("unknown-msg-type-%d", n); };
+}
