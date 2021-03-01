@@ -5,4 +5,5 @@
 # your plugin's accompanying scripts.
 #
 @load ./consts
+@load ./main
 @load-sigs ./dpd.sig

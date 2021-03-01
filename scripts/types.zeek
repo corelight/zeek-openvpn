@@ -21,6 +21,8 @@ export {
 		peer_id		    		: 	string &optional;
 		## The type of parsed OpenVPN message.
 		msg_type				:	count;
+		## The string representation of msg_type
+		msg_type_str			:	string;
 	};
 }
 

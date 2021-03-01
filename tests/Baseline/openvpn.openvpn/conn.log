@@ -3,7 +3,7 @@
 #empty_field	(empty)
 #unset_field	-
 #path	conn
-#open	2021-03-01-16-07-03
+#open	2021-03-01-17-11-19
 #fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	service	duration	orig_bytes	resp_bytes	conn_state	local_orig	local_resp	missed_bytes	history	orig_pkts	orig_ip_bytes	resp_pkts	resp_ip_bytes	tunnel_parents
 #types	time	string	addr	port	addr	port	enum	string	interval	count	count	string	bool	bool	count	string	count	count	count	count	set[string]
 1613755354.147843	Cb7w0T1dHZUPXzdgRi	192.168.88.3	40010	192.168.88.1	53	udp	dns	0.050225	58	182	SF	-	-	0	Dd	1	86	1	210	-
@@ -237,4 +237,4 @@
 1613755413.157760	COJL3m2IFflzZ1Cvdk	192.168.88.3	8	217.138.193.164	0	icmp	-	0.211254	56	56	OTH	-	-	0	-	1	84	1	84	-
 1613755413.156199	CBMc5Bq8xeq3TqHyl	192.168.88.3	8	217.138.211.248	0	icmp	-	0.099736	56	56	OTH	-	-	0	-	1	84	1	84	-
 1613755413.155902	CQKymemsGWxk8qNhi	192.168.88.3	8	217.138.221.74	0	icmp	-	0.137668	56	56	OTH	-	-	0	-	1	84	1	84	-
-#close	2021-03-01-16-07-03
+#close	2021-03-01-17-11-20
