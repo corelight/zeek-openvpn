@@ -22,7 +22,7 @@ export {
 		## The type of parsed OpenVPN message.
 		msg_type				:	count;
 		## The string representation of msg_type
-		msg_type_str			:	string;
+		msg_type_str			:	string &optional;
 	};
 }
 

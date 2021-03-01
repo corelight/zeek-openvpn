@@ -1,4 +1,5 @@
 [package]
 script_dir = scripts/zeek/openvpn
 build_command = ./configure --enable-debug --zeek-dist=%(zeek_dist)s && make
+#build_command = ./configure --enable-debug && make
 test_command = cd tests && btest
