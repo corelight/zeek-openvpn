@@ -246,8 +246,6 @@ refine flow OpenVPN_Flow += {
 			rv->Assign<zeek::StringVal>(8, ${msg.rec.data_v2.peer_id}.length(),
 										reinterpret_cast<const char*>(${msg.rec.data_v2.peer_id}.begin()));
 
-			rv->Assign<zeek::StringVal>(9, "p_data_v2");
-
 			rv->Assign(9, zeek::val_mgr->Count(9));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
