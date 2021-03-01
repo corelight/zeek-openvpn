@@ -15,5 +15,5 @@ redef likely_server_ports += { ports, tcp_ports };
 
 event OpenVPN::message(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg) &priority=5
 	{
-	msg$msg_type_str = OpenVPN::msg_types(msg$msg_type);
+	msg$msg_type_str = OpenVPN::msg_types[msg$msg_type];
 	}
