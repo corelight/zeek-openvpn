@@ -3,52 +3,52 @@
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_control_hard_reset_client_v1_message%(c: connection, is_orig: bool, msg: OpenVPN::ControlMsg%);
+event openvpn_control_hard_reset_client_v1_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
 ## c: The connection record describing the corresponding UDP flow.
 ##
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_control_hard_reset_server_v1_message%(c: connection, is_orig: bool, msg: OpenVPN::ControlMsg%);
+event openvpn_control_hard_reset_server_v1_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
 ## c: The connection record describing the corresponding UDP flow.
 ##
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_control_soft_reset_message%(c: connection, is_orig: bool, msg: OpenVPN::ControlMsg%);
+event openvpn_control_soft_reset_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
 ## c: The connection record describing the corresponding UDP flow.
 ##
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_control_message%(c: connection, is_orig: bool, msg: OpenVPN::ControlMsg%);
+event openvpn_control_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
 ## c: The connection record describing the corresponding UDP flow.
 ##
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_ack_message%(c: connection, is_orig: bool, msg: OpenVPN::ControlMsg%);
+event openvpn_ack_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
 ## c: The connection record describing the corresponding UDP flow.
 ##
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_data1_message%(c: connection, is_orig: bool, msg: OpenVPN::DataMsg%);
+event openvpn_data1_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
 ## c: The connection record describing the corresponding UDP flow.
 ##
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_control_hard_reset_client_v2_message%(c: connection, is_orig: bool, msg: OpenVPN::ControlMsg%);
+event openvpn_control_hard_reset_client_v2_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
 ## c: The connection record describing the corresponding UDP flow.
 ##
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_control_hard_reset_server_v2_message%(c: connection, is_orig: bool, msg: OpenVPN::ControlMsg%);
+event openvpn_control_hard_reset_server_v2_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
 ## c: The connection record describing the corresponding UDP flow.
 ##
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event openvpn_data2_message%(c: connection, is_orig: bool, msg: OpenVPN::DataMsg%);
+event openvpn_data2_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
