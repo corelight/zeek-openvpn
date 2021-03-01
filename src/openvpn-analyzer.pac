@@ -4,10 +4,11 @@ refine flow OpenVPN_Flow += {
 		%{
 		connection()->bro_analyzer()->ProtocolConfirmation();
 
+		if ( !::OpenVPN::message)
+			return false;
+
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V1 )
 			{
-			if ( !openvpn_control_hard_reset_client_v1_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -29,16 +30,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.ssl_data}.length()));
 
-			zeek::BifEvent::enqueue_openvpn_control_hard_reset_client_v1_message(connection()->bro_analyzer(),
-																				 connection()->bro_analyzer()->Conn(),
-																				 is_orig(), std::move(rv));
+			rv->Assign<zeek::StringVal>(9, "control_hard_reset_client_v1");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V1 )
 			{
-			if ( !openvpn_control_hard_reset_server_v1_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -60,16 +61,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.ssl_data}.length()));
 
-			zeek::BifEvent::enqueue_openvpn_control_hard_reset_server_v1_message(connection()->bro_analyzer(),
-																				 connection()->bro_analyzer()->Conn(),
-																				 is_orig(), std::move(rv));
+			rv->Assign<zeek::StringVal>(9, "control_hard_reset_server_v1");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_SOFT_RESET_V1 )
 			{
-			if ( !openvpn_control_soft_reset_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -91,16 +92,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.ssl_data}.length()));
 
-			zeek::BifEvent::enqueue_openvpn_control_soft_reset_message(connection()->bro_analyzer(),
-																	   connection()->bro_analyzer()->Conn(),
-																	   is_orig(), std::move(rv));
+			rv->Assign<zeek::StringVal>(9, "control_soft_reset_v1");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
-			if ( !openvpn_control_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -125,16 +126,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_v1.ssl_data}.length()));
 
-			zeek::BifEvent::enqueue_openvpn_control_message(connection()->bro_analyzer(),
-															connection()->bro_analyzer()->Conn(),
-															is_orig(), std::move(rv));
+			rv->Assign<zeek::StringVal>(9, "control_v1");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_ACK_V1 )
 			{
-			if ( !openvpn_ack_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -151,31 +152,31 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(0));
 
-			zeek::BifEvent::enqueue_openvpn_ack_message(connection()->bro_analyzer(),
-														connection()->bro_analyzer()->Conn(),
-														is_orig(), std::move(rv));
+			rv->Assign<zeek::StringVal>(9, "ack_v1");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if ( !openvpn_data1_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.data_v1.payload}.length()));
 
-			zeek::BifEvent::enqueue_openvpn_data1_message(connection()->bro_analyzer(),
-														  connection()->bro_analyzer()->Conn(),
-														  is_orig(), std::move(rv));
+			rv->Assign<zeek::StringVal>(9, "data_v1");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V2 )
 			{
-			if ( !openvpn_control_hard_reset_client_v2_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -197,16 +198,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.ssl_data}.length()));
 
-			zeek::BifEvent::enqueue_openvpn_control_hard_reset_client_v2_message(connection()->bro_analyzer(),
-																				 connection()->bro_analyzer()->Conn(),
-																				 is_orig(), std::move(rv));
+			rv->Assign<zeek::StringVal>(9, "control_hard_reset_client_v2");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V2 )
 			{
-			if ( !openvpn_control_hard_reset_server_v2_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -228,25 +229,28 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.ssl_data}.length()));
 
-			zeek::BifEvent::enqueue_openvpn_control_hard_reset_server_v2_message(connection()->bro_analyzer(),
-																				 connection()->bro_analyzer()->Conn(),
-																				 is_orig(), std::move(rv));
+			rv->Assign<zeek::StringVal>(9, "control_hard_reset_server_v2");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
-			if ( !openvpn_data2_message)
-				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.data_v2.payload}.length()));
 			rv->Assign<zeek::StringVal>(8, ${msg.rec.data_v2.peer_id}.length(),
 										reinterpret_cast<const char*>(${msg.rec.data_v2.peer_id}.begin()));
-			zeek::BifEvent::enqueue_openvpn_data2_message(connection()->bro_analyzer(),
-														  connection()->bro_analyzer()->Conn(),
-														  is_orig(), std::move(rv));
+
+			rv->Assign<zeek::StringVal>(9, "data_v2");
+
+			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
+													 connection()->bro_analyzer()->Conn(),
+													 is_orig(), std::move(rv));
 			return true;
 			}
 
