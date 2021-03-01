@@ -1,3 +1,5 @@
+module OpenVPN;
+
 export {
 	const msg_types = {
 		[1] = "P_CONTROL_HARD_RESET_CLIENT_V1",
