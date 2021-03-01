@@ -20,7 +20,7 @@ export {
 		## Peer ID
 		peer_id		    		: 	string &optional;
 		## The type of parsed OpenVPN message.
-		msg_type				:	string;
+		msg_type				:	count;
 	};
 }
 

@@ -30,7 +30,7 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.ssl_data}.length()));
 
-			rv->Assign<zeek::StringVal>(9, "control_hard_reset_client_v1");
+			rv->Assign(9, zeek::val_mgr->Count(1));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),
@@ -61,7 +61,7 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.ssl_data}.length()));
 
-			rv->Assign<zeek::StringVal>(9, "control_hard_reset_server_v1");
+			rv->Assign(9, zeek::val_mgr->Count(2));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),
@@ -92,7 +92,7 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.ssl_data}.length()));
 
-			rv->Assign<zeek::StringVal>(9, "control_soft_reset_v1");
+			rv->Assign(9, zeek::val_mgr->Count(3));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),
@@ -126,7 +126,7 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_v1.ssl_data}.length()));
 
-			rv->Assign<zeek::StringVal>(9, "control_v1");
+			rv->Assign(9, zeek::val_mgr->Count(4));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),
@@ -152,7 +152,7 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(0));
 
-			rv->Assign<zeek::StringVal>(9, "ack_v1");
+			rv->Assign(9, zeek::val_mgr->Count(5));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),
@@ -167,7 +167,7 @@ refine flow OpenVPN_Flow += {
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.data_v1.payload}.length()));
 
-			rv->Assign<zeek::StringVal>(9, "data_v1");
+			rv->Assign(9, zeek::val_mgr->Count(6));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),
@@ -198,7 +198,7 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.ssl_data}.length()));
 
-			rv->Assign<zeek::StringVal>(9, "control_hard_reset_client_v2");
+			rv->Assign(9, zeek::val_mgr->Count(7));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),
@@ -229,7 +229,7 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.ssl_data}.length()));
 
-			rv->Assign<zeek::StringVal>(9, "control_hard_reset_server_v2");
+			rv->Assign(9, zeek::val_mgr->Count(8));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),
@@ -246,7 +246,9 @@ refine flow OpenVPN_Flow += {
 			rv->Assign<zeek::StringVal>(8, ${msg.rec.data_v2.peer_id}.length(),
 										reinterpret_cast<const char*>(${msg.rec.data_v2.peer_id}.begin()));
 
-			rv->Assign<zeek::StringVal>(9, "data_v2");
+			rv->Assign<zeek::StringVal>(9, "p_data_v2");
+
+			rv->Assign(9, zeek::val_mgr->Count(9));
 
 			zeek::BifEvent::OpenVPN::enqueue_message(connection()->bro_analyzer(),
 													 connection()->bro_analyzer()->Conn(),

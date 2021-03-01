@@ -4,5 +4,5 @@
 # should execute at that point. This is the most common entry point to
 # your plugin's accompanying scripts.
 #
-#@load ./main
+@load ./consts
 @load-sigs ./dpd.sig
