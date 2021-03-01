@@ -4,11 +4,12 @@ refine flow OpenVPN_Flow += {
 		%{
 		connection()->bro_analyzer()->ProtocolConfirmation();
 
+		if ( !::OpenVPN::message)
+			return false;
+
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V1 )
 			{
-			if ( !openvpn_control_hard_reset_client_v1_message)
-				return false;
-			auto rv =  new RecordVal(BifType::Record::OpenVPN::ControlMsg);
+			auto rv =  new RecordVal(BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
 			rv->Assign(2, new StringVal(${msg.rec.control_hard_reset_client_v1.session_id}.length(), (const char*)${msg.rec.control_hard_reset_client_v1.session_id}.data()));
@@ -27,16 +28,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, val_mgr->GetCount(${msg.rec.control_hard_reset_client_v1.ssl_data}.length()));
 
-			BifEvent::generate_openvpn_control_hard_reset_client_v1_message(connection()->bro_analyzer(),
-			  															   connection()->bro_analyzer()->Conn(),
-																		   is_orig(), std::move(rv));
+			rv->Assign(9, val_mgr->GetCount(1));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+			  						   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V1 )
 			{
-			if ( !openvpn_control_hard_reset_server_v1_message)
-				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
@@ -56,16 +57,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, val_mgr->GetCount(${msg.rec.control_hard_reset_server_v1.ssl_data}.length()));
 
-			BifEvent::generate_openvpn_control_hard_reset_server_v1_message(connection()->bro_analyzer(),
-																				 connection()->bro_analyzer()->Conn(),
-																				 is_orig(), std::move(rv));
+			rv->Assign(9, val_mgr->GetCount(2));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+									   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_SOFT_RESET_V1 )
 			{
-			if ( !openvpn_control_soft_reset_message)
-				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
@@ -85,16 +86,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, val_mgr->GetCount(${msg.rec.control_soft_reset_v1.ssl_data}.length()));
 
-			BifEvent::generate_openvpn_control_soft_reset_message(connection()->bro_analyzer(),
-																   connection()->bro_analyzer()->Conn(),
-																   is_orig(), std::move(rv));
+			rv->Assign(9, val_mgr->GetCount(3));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+									   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
-			if ( !openvpn_control_message)
-				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
@@ -116,16 +117,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, val_mgr->GetCount(${msg.rec.control_v1.ssl_data}.length()));
 
-			BifEvent::generate_openvpn_control_message(connection()->bro_analyzer(),
-															connection()->bro_analyzer()->Conn(),
-															is_orig(), std::move(rv));
+			rv->Assign(9, val_mgr->GetCount(4));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+									   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_ACK_V1 )
 			{
-			if ( !openvpn_ack_message)
-				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
@@ -140,31 +141,31 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, val_mgr->GetCount(0));
 
-			BifEvent::generate_openvpn_ack_message(connection()->bro_analyzer(),
-													connection()->bro_analyzer()->Conn(),
-													is_orig(), std::move(rv));
+			rv->Assign(9, val_mgr->GetCount(5));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+									   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if ( !openvpn_data1_message)
-				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::DataMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
-			rv->Assign(3, val_mgr->GetCount(${msg.rec.data_v1.payload}.length()));
+			rv->Assign(7, val_mgr->GetCount(${msg.rec.data_v1.payload}.length()));
 
-			BifEvent::generate_openvpn_data1_message(connection()->bro_analyzer(),
-													  connection()->bro_analyzer()->Conn(),
-													  is_orig(), std::move(rv));
+			rv->Assign(9, zeek::val_mgr->Count(6));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+									   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V2 )
 			{
-			if ( !openvpn_control_hard_reset_client_v2_message)
-				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
@@ -184,16 +185,16 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, val_mgr->GetCount(${msg.rec.control_hard_reset_client_v2.ssl_data}.length()));
 
-			BifEvent::generate_openvpn_control_hard_reset_client_v2_message(connection()->bro_analyzer(),
-																			 connection()->bro_analyzer()->Conn(),
-																			 is_orig(), std::move(rv));
+			rv->Assign(9, zeek::val_mgr->Count(7));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+									   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V2 )
 			{
-			if ( !openvpn_control_hard_reset_server_v2_message)
-				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
@@ -213,24 +214,26 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(7, val_mgr->GetCount(${msg.rec.control_hard_reset_server_v2.ssl_data}.length()));
 
-			BifEvent::generate_openvpn_control_hard_reset_server_v2_message(connection()->bro_analyzer(),
-																			 connection()->bro_analyzer()->Conn(),
-																			 is_orig(), std::move(rv));
+			rv->Assign(9, zeek::val_mgr->Count(8));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+									   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
-			if ( !openvpn_data2_message)
-				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::DataMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
-			rv->Assign(2, new StringVal(${msg.rec.data_v2.peer_id}.length(), (const char*)${msg.rec.data_v2.peer_id}.data()));
-			rv->Assign(3, val_mgr->GetCount(${msg.rec.data_v2.payload}.length()));
-			BifEvent::generate_openvpn_data2_message(connection()->bro_analyzer(),
-													  connection()->bro_analyzer()->Conn(),
-													  is_orig(), std::move(rv));
+			rv->Assign(7, val_mgr->GetCount(${msg.rec.data_v2.payload}.length()));
+			rv->Assign(8, new StringVal(${msg.rec.data_v2.peer_id}.length(), (const char*)${msg.rec.data_v2.peer_id}.data()));
+			rv->Assign(9, val_mgr->Count(9));
+
+			BifEvent::generate_message(connection()->bro_analyzer(),
+									   connection()->bro_analyzer()->Conn(),
+									   is_orig(), std::move(rv));
 			return true;
 			}
 

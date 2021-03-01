@@ -1,33 +1,28 @@
 module OpenVPN;
 export {
-	type ControlMsg: record {
+	type ParsedMsg: record {
 		## Opcode
 		opcode					:	count;
 		## Key ID
 		key_id					:	count;
 		## Session ID
-		session_id	    		: 	string;
+		session_id	    		: 	string &optional;
 		## Packet id ack array
-		packet_id_ack_array		:	vector of count;
+		packet_id_ack_array		:	vector of count &optional;
 		## Remote session ID
-		remote_session_id		:	string;
+		remote_session_id		:	string &optional;
 		## Packet ID
-		packet_id				:	count;
+		packet_id				:	count &optional;
 		## The SSL data
-		ssl_data				:	string;
+		ssl_data				:	string &optional;
 		## The amount of data
 		data_len				:	count;
-	};
-
-	type DataMsg: record {
-		## Opcode
-		opcode					:	count;
-		## Key ID
-		key_id					:	count;
 		## Peer ID
-		peer_id		    		: 	string;
-		## The amount of data
-		data_len				:	count;
+		peer_id		    		: 	string &optional;
+		## The type of parsed OpenVPN message.
+		msg_type				:	count;
+		## The string representation of msg_type
+		msg_type_str			:	string;
 	};
 }
 
