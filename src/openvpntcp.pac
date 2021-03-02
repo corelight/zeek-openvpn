@@ -18,6 +18,7 @@ connection OpenVPN_Conn(bro_analyzer: BroAnalyzer) {
 	downflow = OpenVPN_Flow(false);
 };
 
+%include openvpn-defs.pac
 %include openvpntcp-protocol.pac
 
 flow OpenVPN_Flow(is_orig: bool) {
