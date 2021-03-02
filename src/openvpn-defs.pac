@@ -1,3 +1,8 @@
+%extern{
+#include "analyzer/Manager.h"
+%}
+
+
 enum Openvpn_Opcode {
 	P_CONTROL_HARD_RESET_CLIENT_V1	= 0x01,
 	P_CONTROL_HARD_RESET_SERVER_V1	= 0x02,
@@ -55,6 +60,9 @@ type Control(rec: OpenVPNRecord, has_hmac: bool) = record {
 	};
 	packet_id : uint32;
 	ssl_data : bytestring &restofdata;
+} &let {
+	ssl_data_forwarded : bool =
+		$context.connection.forward_ssl(ssl_data, rec.is_orig);
 };
 
 type AckV1(rec: OpenVPNRecord, has_hmac: bool) = record {

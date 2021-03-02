@@ -284,3 +284,28 @@ refine connection OpenVPN_Conn += {
 refine typeattr OpenVPNRecord += &let {
 	proc: bool = $context.connection.proc_openvpn_message(this);
 };
+
+refine connection OpenVPN_Conn += {
+
+	%member{
+		analyzer::Analyzer *ssl;
+	%}
+
+	%init{
+		ssl = 0;
+	%}
+
+	%cleanup{
+		if ( ssl )
+			{
+			ssl->Done();
+			}
+	%}
+
+	function forward_ssl(ssl_data: bytestring, is_orig: bool) : bool
+		%{
+		if ( ssl )
+			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+		return true;
+		%}
+};
