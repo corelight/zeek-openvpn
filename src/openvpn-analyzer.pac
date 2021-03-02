@@ -1,7 +1,8 @@
 refine connection OpenVPN_Conn += {
 
 	%member{
-		bool seen_control = false;
+		bool seen_control_orig = false;
+		bool seen_control_resp = false;
 	%}
 
 	function proc_openvpn_message(msg: OpenVPNRecord): bool
@@ -98,7 +99,17 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
-			seen_control = true;
+			if (${msg.is_orig})
+				{
+				seen_control_orig = true;
+				}
+			else
+				{
+				if (seen_control_orig)
+					{
+					seen_control_resp = true;
+					}
+				}
 
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
@@ -155,16 +166,14 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if (seen_control)
+			if (seen_control_orig && seen_control_resp)
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
-
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
 			rv->Assign(7, val_mgr->GetCount(${msg.rec.data_v1.payload}.length()));
-
 			rv->Assign(9, val_mgr->GetCount(6));
 
 			BifEvent::OpenVPN::generate_message(bro_analyzer(),
@@ -233,11 +242,10 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
-			if (seen_control)
+			if (seen_control_orig && seen_control_resp)
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
-
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
