@@ -19,6 +19,12 @@ redef record connection += {
 	openvpn: Info &optional;
 };
 
+function set_session(c: connection)
+	{
+	if ( ! c?$openvpn )
+		c$openvpn = [];
+	}
+
 event protocol_confirmation(c: connection, atype: Analyzer::Tag, aid: count) &priority=5
 	{
 	if ( atype == Analyzer::ANALYZER_OPENVPN || atype == Analyzer::ANALYZER_OPENVPNHMAC || atype == Analyzer::ANALYZER_OPENVPNTCP || atype == Analyzer::ANALYZER_OPENVPNTCPHMAC )
