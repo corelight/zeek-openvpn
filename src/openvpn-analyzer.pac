@@ -307,7 +307,7 @@ refine connection OpenVPN_Conn += {
 		if ( ! ssl )
 			ssl = analyzer_mgr->InstantiateAnalyzer("SSL", bro_analyzer()->Conn());
 		if ( ssl )
-			ssl->NextStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+			ssl->NextPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
 		return true;
 		%}
 };
