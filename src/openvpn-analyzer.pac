@@ -1,9 +1,7 @@
-refine flow OpenVPN_Flow += {
+refine connection OpenVPN_Conn += {
 
 	function proc_openvpn_message(msg: OpenVPNRecord): bool
 		%{
-		connection()->bro_analyzer()->ProtocolConfirmation();
-
 		if ( !::OpenVPN::message)
 			return false;
 
@@ -30,9 +28,9 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(9, val_mgr->GetCount(1));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -59,9 +57,9 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(9, val_mgr->GetCount(2));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -88,18 +86,21 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(9, val_mgr->GetCount(3));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
-			auto rv = new RecordVal(BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
-			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
-			rv->Assign(2, new StringVal(${msg.rec.control_v1.session_id}.length(), (const char*)${msg.rec.control_v1.session_id}.data()));
+			bro_analyzer()->ProtocolConfirmation();
+
+			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+			rv->Assign<zeek::StringVal>(2, ${msg.rec.control_v1.session_id}.length(),
+										reinterpret_cast<const char*>(${msg.rec.control_v1.session_id}.begin()));
 
 			auto acks = new VectorVal(index_vec);
 			for ( size_t i=0; i < ${msg.rec.control_v1.packet_id_array}->size(); ++i )
@@ -119,9 +120,9 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(9, val_mgr->GetCount(4));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -143,9 +144,9 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(9, val_mgr->GetCount(5));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -158,9 +159,9 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(9, val_mgr->GetCount(6));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -187,9 +188,9 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(9, val_mgr->GetCount(7));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -216,9 +217,9 @@ refine flow OpenVPN_Flow += {
 
 			rv->Assign(9, val_mgr->GetCount(8));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -231,9 +232,9 @@ refine flow OpenVPN_Flow += {
 			rv->Assign(8, new StringVal(${msg.rec.data_v2.peer_id}.length(), (const char*)${msg.rec.data_v2.peer_id}.data()));
 			rv->Assign(9, val_mgr->GetCount(9));
 
-			BifEvent::OpenVPN::generate_message(connection()->bro_analyzer(),
-									   			connection()->bro_analyzer()->Conn(),
-									   			is_orig(), std::move(rv));;
+			BifEvent::OpenVPN::generate_message(bro_analyzer(),
+									   			bro_analyzer()->Conn(),
+									   			${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -242,5 +243,5 @@ refine flow OpenVPN_Flow += {
 };
 
 refine typeattr OpenVPNRecord += &let {
-	proc: bool = $context.flow.proc_openvpn_message(this);
+	proc: bool = $context.connection.proc_openvpn_message(this);
 };
