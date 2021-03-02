@@ -21,6 +21,11 @@ void OpenVPN_Analyzer::Done()
 OpenVPN_Analyzer::~OpenVPN_Analyzer()
 	{
 	delete interp;
+	if (ssl)
+		{
+		ssl->Done();
+		delete ssl;
+		}
 	}
 
 void OpenVPN_Analyzer::DeliverPacket(int len, const u_char* data, bool orig,
@@ -36,6 +41,15 @@ void OpenVPN_Analyzer::DeliverPacket(int len, const u_char* data, bool orig,
 		{
 		ProtocolViolation(fmt("Binpac exception: %s", e.c_msg()));
 		}
+	}
+
+void OpenVPN_Analyzer::ForwardSSL(int len, const char* data, bool is_orig)
+	{
+	if (!ssl){
+		// We don't care about the direction here.
+		ssl = new ssl::SSL_Analyzer(this->Conn());
+		}
+	ssl->NextStream(len, (const u_char*) data, is_orig);
 	}
 
 } // namespace zeek::analyzer::openvpn

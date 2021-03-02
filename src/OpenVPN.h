@@ -1,6 +1,7 @@
 #pragma once
 
 #include "zeek/analyzer/protocol/udp/UDP.h"
+#include "zeek/analyzer/protocol/ssl/SSL.h"
 
 #include "events.bif.h"
 #include "types.bif.h"
@@ -24,11 +25,14 @@ public:
 	void DeliverPacket(int len, const u_char* data, bool orig,
 					uint64_t seq, const IP_Hdr* ip, int caplen) override;
 
+	void ForwardSSL(int len, const char* data, bool is_orig);
+
 	static ::analyzer::Analyzer* Instantiate(Connection* conn)
 		{ return new OpenVPN_Analyzer(conn); }
 
 protected:
 	binpac::OpenVPN::OpenVPN_Conn* interp;
+	ssl::SSL_Analyzer* ssl = nullptr;
 };
 
 } // namespace zeek::analyzer::openvpn
