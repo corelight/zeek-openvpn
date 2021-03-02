@@ -96,11 +96,10 @@ refine connection OpenVPN_Conn += {
 			{
 			bro_analyzer()->ProtocolConfirmation();
 
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
-			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign<zeek::StringVal>(2, ${msg.rec.control_v1.session_id}.length(),
-										reinterpret_cast<const char*>(${msg.rec.control_v1.session_id}.begin()));
+			auto rv = new RecordVal(BifType::Record::OpenVPN::ParsedMsg);
+			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
+			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
+			rv->Assign(2, new StringVal(${msg.rec.control_v1.session_id}.length(), (const char*)${msg.rec.control_v1.session_id}.data()));
 
 			auto acks = new VectorVal(index_vec);
 			for ( size_t i=0; i < ${msg.rec.control_v1.packet_id_array}->size(); ++i )
