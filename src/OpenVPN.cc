@@ -50,7 +50,7 @@ void OpenVPN_Analyzer::ForwardSSL(int len, const u_char* data)
 		// We don't care about the direction here.
 		ssl = new ssl::SSL_Analyzer(this->Conn());
 		}
-	ssl->NextStream(len, (const u_char*) data, false);
+	ssl->NextPacket(len, (const u_char*) data, false);
 	}
 
 } // namespace zeek::analyzer::openvpn
