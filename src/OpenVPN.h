@@ -25,7 +25,7 @@ public:
 	void DeliverPacket(int len, const u_char* data, bool orig,
 					uint64_t seq, const IP_Hdr* ip, int caplen) override;
 
-	void ForwardSSL(int len, const char* data, bool is_orig);
+	void ForwardSSL(int len, const u_char* data);
 
 	static ::analyzer::Analyzer* Instantiate(Connection* conn)
 		{ return new OpenVPN_Analyzer(conn); }
