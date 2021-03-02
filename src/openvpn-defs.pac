@@ -10,7 +10,11 @@ enum Openvpn_Opcode {
 	P_DATA_V2			= 0x09,
 };
 
-type OpenVPNRecord(is_orig: bool, hmac: bool) = record {
+type OpenVPNRecord(is_orig: bool, hmac: bool, tcp: bool) = record {
+	is_tcp: case tcp of {
+		true	-> packet_length : uint16;
+		false	-> no_key : empty;
+	};
 	MessageType : uint8;
 	rec: OpenVPNData(this, hmac) &requires(opcode, key_id);
 } &let {
