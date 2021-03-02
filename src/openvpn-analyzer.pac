@@ -307,10 +307,12 @@ refine connection OpenVPN_Conn += {
 		if ( ! ssl )
 			ssl = analyzer_mgr->InstantiateAnalyzer("DTLS", bro_analyzer()->Conn());
 		if ( ssl )
-//			ssl->NextStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
-//			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+			{
+// 			ssl->NextStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+// 			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+//  		ssl->NextPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
  			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
- 			ssl->NextPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+			}
 		return true;
 		%}
 };
