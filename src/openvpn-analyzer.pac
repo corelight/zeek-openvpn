@@ -1,5 +1,9 @@
 refine connection OpenVPN_Conn += {
 
+	%member{
+		bool seen_control = false;
+	%}
+
 	function proc_openvpn_message(msg: OpenVPNRecord): bool
 		%{
 		if ( !::OpenVPN::message)
@@ -100,7 +104,7 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
-			bro_analyzer()->ProtocolConfirmation();
+			seen_control = true;
 
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
@@ -162,6 +166,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
+			if (seen_control)
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -239,6 +248,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
+			if (seen_control)
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
