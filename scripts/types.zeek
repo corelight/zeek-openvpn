@@ -13,8 +13,6 @@ export {
 		remote_session_id		:	string &optional;
 		## Packet ID
 		packet_id				:	count &optional;
-		## The SSL data
-		ssl_data				:	string &optional;
 		## The amount of data
 		data_len				:	count;
 		## Peer ID
