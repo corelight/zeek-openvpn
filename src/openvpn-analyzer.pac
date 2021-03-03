@@ -312,7 +312,6 @@ refine connection OpenVPN_Conn += {
 		if ( ssl )
 			{
 			ssl->Done();
-// 			delete ssl;
 			}
 	%}
 
