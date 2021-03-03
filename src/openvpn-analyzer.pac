@@ -7,11 +7,11 @@ refine connection OpenVPN_Conn += {
 
 	function proc_openvpn_message(msg: OpenVPNRecord): bool
 		%{
-		if ( !::OpenVPN::message)
-			return false;
-
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V1 )
 			{
+			if ( !::OpenVPN::control_message)
+				return false;
+
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -35,14 +35,16 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(1));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+													         bro_analyzer()->Conn(),
+													         ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V1 )
 			{
+			if ( !::OpenVPN::control_message)
+				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -66,14 +68,16 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(2));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+													         bro_analyzer()->Conn(),
+													         ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_SOFT_RESET_V1 )
 			{
+			if ( !::OpenVPN::control_message)
+				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -97,14 +101,16 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(3));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+													         bro_analyzer()->Conn(),
+													         ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
+			if ( !::OpenVPN::control_message)
+				return false;
 			if (${msg.is_orig})
 				{
 				seen_control_orig = true;
@@ -143,14 +149,16 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(4));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+													         bro_analyzer()->Conn(),
+													         ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_ACK_V1 )
 			{
+			if ( !::OpenVPN::ack_message)
+				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -169,14 +177,16 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(5));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_ack_message(bro_analyzer(),
+												         bro_analyzer()->Conn(),
+												         ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
+			if ( !::OpenVPN::data_message)
+				return false;
 			if (seen_control_orig && seen_control_resp)
 				{
 				bro_analyzer()->ProtocolConfirmation();
@@ -188,14 +198,16 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(6));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_data_message(bro_analyzer(),
+												          bro_analyzer()->Conn(),
+												          ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V2 )
 			{
+			if ( !::OpenVPN::control_message)
+				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -219,14 +231,16 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(7));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+													         bro_analyzer()->Conn(),
+													         ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V2 )
 			{
+			if ( !::OpenVPN::control_message)
+				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -250,14 +264,16 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(8));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+													         bro_analyzer()->Conn(),
+													         ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
+			if ( !::OpenVPN::data_message)
+				return false;
 			if (seen_control_orig && seen_control_resp)
 				{
 				bro_analyzer()->ProtocolConfirmation();
@@ -271,9 +287,9 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(9, zeek::val_mgr->Count(9));
 
-			zeek::BifEvent::OpenVPN::enqueue_message(bro_analyzer(),
-													 bro_analyzer()->Conn(),
-													 ${msg.is_orig}, std::move(rv));
+			zeek::BifEvent::OpenVPN::enqueue_data_message(bro_analyzer(),
+												          bro_analyzer()->Conn(),
+												          ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -308,7 +324,7 @@ refine connection OpenVPN_Conn += {
 			ssl = (analyzer::ssl::SSL_Analyzer *)analyzer_mgr->InstantiateAnalyzer("SSL", bro_analyzer()->Conn());
 		if ( ssl )
 			{
- 			ssl->DeliverData(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+//  			ssl->DeliverData(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
 			}
 		return true;
 		%}
