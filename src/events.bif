@@ -3,4 +3,16 @@
 ## is_orig: True if the message was sent by the originator.
 ##
 ## msg: The parsed OpenVPN message.
-event OpenVPN::message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
+event OpenVPN::control_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
+## c: The connection record describing the corresponding UDP flow.
+##
+## is_orig: True if the message was sent by the originator.
+##
+## msg: The parsed OpenVPN message.
+event OpenVPN::data_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
+## c: The connection record describing the corresponding UDP flow.
+##
+## is_orig: True if the message was sent by the originator.
+##
+## msg: The parsed OpenVPN message.
+event OpenVPN::ack_message%(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg%);
