@@ -304,7 +304,8 @@ refine typeattr OpenVPNRecord += &let {
 refine connection OpenVPN_Conn += {
 
 	%member{
-		analyzer::ssl::SSL_Analyzer *ssl;
+// 		analyzer::ssl::SSL_Analyzer *ssl;
+		analyzer::Analyzer *ssl;
 	%}
 
 	%init{
@@ -315,6 +316,7 @@ refine connection OpenVPN_Conn += {
 		if ( ssl )
 			{
 			ssl->Done();
+			delete ssl;
 			}
 	%}
 
