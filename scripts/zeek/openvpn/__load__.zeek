@@ -4,6 +4,8 @@
 # should execute at that point. This is the most common entry point to
 # your plugin's accompanying scripts.
 #
+#@load base/protocols/ssl
+#redef SSL::disable_analyzer_after_detection = F;
 @load ./consts
 @load ./main
 @load-sigs ./dpd.sig
