@@ -324,7 +324,8 @@ refine connection OpenVPN_Conn += {
 			}
 		if ( ssl )
 			{
-  			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
+//   			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
+  			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
 			}
 		return true;
 		%}
