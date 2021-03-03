@@ -265,6 +265,7 @@ refine connection OpenVPN_Conn += {
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
 			rv->Assign(6, val_mgr->GetCount(${msg.rec.data_v2.payload}.length()));
 			rv->Assign(7, new StringVal(${msg.rec.data_v2.peer_id}.length(), (const char*)${msg.rec.data_v2.peer_id}.data()));
+
 			rv->Assign(8, val_mgr->GetCount(9));
 
 			BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
