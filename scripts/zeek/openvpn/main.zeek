@@ -34,6 +34,21 @@ event protocol_confirmation(c: connection, atype: Analyzer::Tag, aid: count) &pr
 		}
 	}
 
+event OpenVPN::control_message(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg) &priority=5
+	{
+	msg$msg_type_str = OpenVPN::msg_types[msg$msg_type];
+	}
+
+event OpenVPN::ack_message(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg) &priority=5
+	{
+	msg$msg_type_str = OpenVPN::msg_types[msg$msg_type];
+	}
+
+event OpenVPN::data_message(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg) &priority=5
+	{
+	msg$msg_type_str = OpenVPN::msg_types[msg$msg_type];
+	}
+
 #event zeek_init() &priority=5
 #	{
 #	Analyzer::register_for_ports(Analyzer::ANALYZER_OPENVPN, ports);
@@ -41,8 +56,3 @@ event protocol_confirmation(c: connection, atype: Analyzer::Tag, aid: count) &pr
 #	Analyzer::register_for_ports(Analyzer::ANALYZER_OPENVPNTCP, tcp_ports);
 #	Analyzer::register_for_ports(Analyzer::ANALYZER_OPENVPNTCPHMAC, tcp_ports);
 #	}
-
-event OpenVPN::message(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg) &priority=5
-	{
-	msg$msg_type_str = OpenVPN::msg_types[msg$msg_type];
-	}
