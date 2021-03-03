@@ -31,9 +31,9 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.packet_id}));
 
-			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.ssl_data}.length()));
+			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.ssl_data}.length()));
 
-			rv->Assign(9, zeek::val_mgr->Count(1));
+			rv->Assign(8, zeek::val_mgr->Count(1));
 
 			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 													         bro_analyzer()->Conn(),
@@ -64,9 +64,9 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.packet_id}));
 
-			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.ssl_data}.length()));
+			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.ssl_data}.length()));
 
-			rv->Assign(9, zeek::val_mgr->Count(2));
+			rv->Assign(8, zeek::val_mgr->Count(2));
 
 			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 													         bro_analyzer()->Conn(),
@@ -97,9 +97,9 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.packet_id}));
 
-			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.ssl_data}.length()));
+			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.ssl_data}.length()));
 
-			rv->Assign(9, zeek::val_mgr->Count(3));
+			rv->Assign(8, zeek::val_mgr->Count(3));
 
 			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 													         bro_analyzer()->Conn(),
@@ -142,12 +142,9 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_v1.packet_id}));
 
-			rv->Assign<zeek::StringVal>(6, ${msg.rec.control_v1.ssl_data}.length(),
-										reinterpret_cast<const char*>(${msg.rec.control_v1.ssl_data}.begin()));
+			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_v1.ssl_data}.length()));
 
-			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_v1.ssl_data}.length()));
-
-			rv->Assign(9, zeek::val_mgr->Count(4));
+			rv->Assign(8, zeek::val_mgr->Count(4));
 
 			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 													         bro_analyzer()->Conn(),
@@ -173,9 +170,9 @@ refine connection OpenVPN_Conn += {
 			rv->Assign<zeek::StringVal>(4, ${msg.rec.ack_v1.remote_session_id}.length(),
 										reinterpret_cast<const char*>(${msg.rec.ack_v1.remote_session_id}.begin()));
 
-			rv->Assign(7, zeek::val_mgr->Count(0));
+			rv->Assign(6, zeek::val_mgr->Count(0));
 
-			rv->Assign(9, zeek::val_mgr->Count(5));
+			rv->Assign(8, zeek::val_mgr->Count(5));
 
 			zeek::BifEvent::OpenVPN::enqueue_ack_message(bro_analyzer(),
 												         bro_analyzer()->Conn(),
@@ -194,9 +191,9 @@ refine connection OpenVPN_Conn += {
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.data_v1.payload}.length()));
+			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v1.payload}.length()));
 
-			rv->Assign(9, zeek::val_mgr->Count(6));
+			rv->Assign(8, zeek::val_mgr->Count(6));
 
 			zeek::BifEvent::OpenVPN::enqueue_data_message(bro_analyzer(),
 												          bro_analyzer()->Conn(),
@@ -227,9 +224,9 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.packet_id}));
 
-			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.ssl_data}.length()));
+			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.ssl_data}.length()));
 
-			rv->Assign(9, zeek::val_mgr->Count(7));
+			rv->Assign(8, zeek::val_mgr->Count(7));
 
 			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 													         bro_analyzer()->Conn(),
@@ -260,9 +257,9 @@ refine connection OpenVPN_Conn += {
 
 			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.packet_id}));
 
-			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.ssl_data}.length()));
+			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.ssl_data}.length()));
 
-			rv->Assign(9, zeek::val_mgr->Count(8));
+			rv->Assign(8, zeek::val_mgr->Count(8));
 
 			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 													         bro_analyzer()->Conn(),
@@ -281,11 +278,11 @@ refine connection OpenVPN_Conn += {
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign(7, zeek::val_mgr->Count(${msg.rec.data_v2.payload}.length()));
+			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v2.payload}.length()));
 			rv->Assign<zeek::StringVal>(8, ${msg.rec.data_v2.peer_id}.length(),
 										reinterpret_cast<const char*>(${msg.rec.data_v2.peer_id}.begin()));
 
-			rv->Assign(9, zeek::val_mgr->Count(9));
+			rv->Assign(8, zeek::val_mgr->Count(9));
 
 			zeek::BifEvent::OpenVPN::enqueue_data_message(bro_analyzer(),
 												          bro_analyzer()->Conn(),
