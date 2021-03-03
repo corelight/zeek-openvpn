@@ -316,7 +316,7 @@ refine connection OpenVPN_Conn += {
 			}
 	%}
 
-	function forward_ssl(ssl_data: bytestring, is_orig: bool) : bool
+	function forward_ssl(ssl_data: bytestring, is_orig: bool, is_tcp: bool) : bool
 		%{
 		if ( ! ssl )
 			{
@@ -324,8 +324,14 @@ refine connection OpenVPN_Conn += {
 			}
 		if ( ssl )
 			{
-//   			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
-  			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+			if (is_tcp)
+				{
+	  			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+				}
+			else
+				{
+	  			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
+				}
 			}
 		return true;
 		%}

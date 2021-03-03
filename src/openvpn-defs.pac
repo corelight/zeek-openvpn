@@ -16,7 +16,7 @@ enum Openvpn_Opcode {
 };
 
 type OpenVPNRecord(is_orig: bool, hmac: bool, tcp: bool) = record {
-	is_tcp: case tcp of {
+	tcpfields: case tcp of {
 		true	-> packet_length : uint16;
 		false	-> no_key : empty;
 	};
@@ -61,7 +61,7 @@ type Control(rec: OpenVPNRecord, has_hmac: bool, ssl_forward: bool) = record {
 	packet_id : uint32;
 	ssl_data : bytestring &restofdata;
 } &let {
-	ssl_data_forwarded : bool = $context.connection.forward_ssl(ssl_data, rec.is_orig) &if(ssl_forward == true);
+	ssl_data_forwarded : bool = $context.connection.forward_ssl(ssl_data, rec.is_orig, rec.tcp) &if(ssl_forward == true);
 };
 
 type AckV1(rec: OpenVPNRecord, has_hmac: bool) = record {
