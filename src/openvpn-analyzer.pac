@@ -279,7 +279,7 @@ refine connection OpenVPN_Conn += {
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v2.payload}.length()));
-			rv->Assign<zeek::StringVal>(8, ${msg.rec.data_v2.peer_id}.length(),
+			rv->Assign<zeek::StringVal>(7, ${msg.rec.data_v2.peer_id}.length(),
 										reinterpret_cast<const char*>(${msg.rec.data_v2.peer_id}.begin()));
 
 			rv->Assign(8, zeek::val_mgr->Count(9));
