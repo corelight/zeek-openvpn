@@ -302,15 +302,13 @@ refine connection OpenVPN_Conn += {
 
 	function forward_ssl(ssl_data: bytestring, is_orig: bool) : bool
 		%{
-		// TODO: Remove this when SSL supports UDP data.
-		return false;
 		if ( ! ssl )
 			{
 			ssl = new analyzer::ssl::SSL_Analyzer(bro_analyzer()->Conn());
 			}
 		if ( ssl )
 			{
-  			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
+  			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
 			}
 		return true;
 		%}
