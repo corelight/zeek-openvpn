@@ -182,12 +182,12 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if ( !::OpenVPN::data_message)
-				return false;
 			if (seen_control_orig && seen_control_resp)
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
+			if ( !::OpenVPN::data_message)
+				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -269,12 +269,12 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
-			if ( !::OpenVPN::data_message)
-				return false;
 			if (seen_control_orig && seen_control_resp)
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
+			if ( !::OpenVPN::data_message)
+				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -312,6 +312,8 @@ refine connection OpenVPN_Conn += {
 		if ( ssl )
 			{
 			ssl->Done();
+			delete ssl;
+			ssl = 0;
 			}
 	%}
 
