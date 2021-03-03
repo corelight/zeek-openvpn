@@ -28,14 +28,14 @@ type OpenVPNRecord(is_orig: bool, hmac: bool, tcp: bool) = record {
 } &byteorder = bigendian;
 
 type OpenVPNData(rec: OpenVPNRecord, hmac: bool) = case rec.opcode of {
-	P_CONTROL_HARD_RESET_CLIENT_V1 	-> control_hard_reset_client_v1: 	Control(rec, hmac);
-	P_CONTROL_HARD_RESET_SERVER_V1 	-> control_hard_reset_server_v1: 	Control(rec, hmac);
-	P_CONTROL_SOFT_RESET_V1 		-> control_soft_reset_v1: 			Control(rec, hmac);
-	P_CONTROL_V1 					-> control_v1: 						ControlV1(rec, hmac);
+	P_CONTROL_HARD_RESET_CLIENT_V1 	-> control_hard_reset_client_v1: 	Control(rec, hmac, false);
+	P_CONTROL_HARD_RESET_SERVER_V1 	-> control_hard_reset_server_v1: 	Control(rec, hmac, false);
+	P_CONTROL_SOFT_RESET_V1 		-> control_soft_reset_v1: 			Control(rec, hmac, false);
+	P_CONTROL_V1 					-> control_v1: 						Control(rec, hmac, true);
 	P_ACK_V1 						-> ack_v1: 							AckV1(rec, hmac);
 	P_DATA_V1 						-> data_v1: 						DataV1(rec);
-	P_CONTROL_HARD_RESET_CLIENT_V2 	-> control_hard_reset_client_v2: 	Control(rec, hmac);
-	P_CONTROL_HARD_RESET_SERVER_V2 	-> control_hard_reset_server_v2: 	Control(rec, hmac);
+	P_CONTROL_HARD_RESET_CLIENT_V2 	-> control_hard_reset_client_v2: 	Control(rec, hmac, false);
+	P_CONTROL_HARD_RESET_SERVER_V2 	-> control_hard_reset_server_v2: 	Control(rec, hmac, false);
 	P_DATA_V2 						-> data_v2: 						DataV2(rec);
 	default 						-> unknown: 						bytestring &restofdata &transient;
 };
@@ -46,7 +46,7 @@ type HMACInfo = record {
 	net_time  : bytestring &length=4;
 };
 
-type Control(rec: OpenVPNRecord, has_hmac: bool) = record {
+type Control(rec: OpenVPNRecord, has_hmac: bool, ssl_forward: bool) = record {
 	session_id : bytestring &length=8;
 	hmac_present: case has_hmac of {
 		true	-> hmac : HMACInfo;
@@ -60,25 +60,8 @@ type Control(rec: OpenVPNRecord, has_hmac: bool) = record {
 	};
 	packet_id : uint32;
 	ssl_data : bytestring &restofdata;
-};
-
-type ControlV1(rec: OpenVPNRecord, has_hmac: bool) = record {
-	session_id : bytestring &length=8;
-	hmac_present: case has_hmac of {
-			true	-> hmac : HMACInfo;
-			false	-> no_key : empty;
-	};
-	packet_id_array_len : uint8;
-	packet_id_array : uint32[packet_id_array_len];
-	rs: case packet_id_array_len of {
-			0 -> nothing: bytestring &length=0;
-			default -> remote_session_id: bytestring &length=8;
-	};
-	packet_id : uint32;
-	ssl_data : bytestring &restofdata;
 } &let {
-	ssl_data_forwarded : bool =
-	$context.connection.forward_ssl(ssl_data, rec.is_orig);
+	ssl_data_forwarded : bool = $context.connection.forward_ssl(ssl_data, rec.is_orig) &if(ssl_forward == true);
 };
 
 type AckV1(rec: OpenVPNRecord, has_hmac: bool) = record {
