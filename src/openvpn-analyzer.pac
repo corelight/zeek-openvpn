@@ -305,7 +305,7 @@ refine connection OpenVPN_Conn += {
 	function forward_ssl(ssl_data: bytestring, is_orig: bool) : bool
 		%{
 		if ( ! ssl )
-			ssl = analyzer_mgr->InstantiateAnalyzer("DTLS", bro_analyzer()->Conn());
+			ssl = analyzer_mgr->InstantiateAnalyzer("SSL", bro_analyzer()->Conn());
 		if ( ssl )
 			{
  			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
