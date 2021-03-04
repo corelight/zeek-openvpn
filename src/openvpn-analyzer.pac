@@ -192,8 +192,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
-			if ( !::OpenVPN::control_message)
-				return false;
 			if (${msg.is_orig})
 				{
 				seen_control_orig = true;
@@ -205,6 +203,9 @@ refine connection OpenVPN_Conn += {
 					seen_control_resp = true;
 					}
 				}
+
+			if ( !::OpenVPN::control_message)
+				return false;
 
 			if (${msg.tcp})
 				{
@@ -291,16 +292,26 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if ( !::OpenVPN::data_message)
-				return false;
 			if (seen_control_orig && seen_control_resp)
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
+
+			if ( !::OpenVPN::data_message)
+				return false;
+
 			auto rv = new RecordVal(BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
-			rv->Assign(6, val_mgr->GetCount(${msg.rec.data_v1.tcp.payload}.length()));
+
+			if (${msg.tcp})
+				{
+				rv->Assign(6, val_mgr->GetCount(${msg.rec.data_v1.tcp.payload}.length()));
+				}
+			else
+				{
+				rv->Assign(6, val_mgr->GetCount(${msg.rec.data_v1.udp.payload}.length()));
+				}
 
 			rv->Assign(8, val_mgr->GetCount(6));
 
@@ -438,8 +449,10 @@ refine connection OpenVPN_Conn += {
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
+
 			if ( !::OpenVPN::data_message)
 				return false;
+				
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
