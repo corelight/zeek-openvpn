@@ -49,11 +49,11 @@ type HMACInfo = record {
 type Control(rec: OpenVPNRecord, control_v1: bool) = record {
 	control_data: case rec.tcp of {
 			true	-> tcp : ControlTCP(rec, control_v1);
-			false	-> udp : ControlUDP(rec);
+			false	-> udp : ControlUDP(rec, control_v1);
 	};
 };
 
-type ControlUDP(rec: OpenVPNRecord) = record {
+type ControlUDP(rec: OpenVPNRecord, control_v1: bool) = record {
 	session_id : bytestring &length=8;
 	hmac_present: case rec.hmac of {
 			true	-> hmac : HMACInfo;
@@ -67,6 +67,8 @@ type ControlUDP(rec: OpenVPNRecord) = record {
 	};
 	packet_id : uint32;
 	ssl_data : bytestring &restofdata;
+} &let {
+	ssl_data_forwarded : bool = $context.connection.forward_ssl_udp(ssl_data, rec.is_orig) &if(control_v1 == true);
 };
 
 type ControlTCP(rec: OpenVPNRecord, control_v1: bool) = record {
@@ -83,6 +85,8 @@ type ControlTCP(rec: OpenVPNRecord, control_v1: bool) = record {
 	};
 	packet_id : uint32;
 	ssl_data : bytestring &restofdata;
+} &let {
+	ssl_data_forwarded : bool = $context.connection.forward_ssl_tcp(ssl_data, rec.is_orig) &if(control_v1 == true);
 } &length=rec.packet_length-1;
 
 type AckV1(rec: OpenVPNRecord) = record {
