@@ -453,9 +453,9 @@ refine connection OpenVPN_Conn += {
 			if ( !::OpenVPN::data_message)
 				return false;
 				
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
-			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+			auto rv = new RecordVal(BifType::Record::OpenVPN::ParsedMsg);
+			rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
+			rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
 
 			if (${msg.tcp})
 				{
@@ -468,11 +468,11 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(7, new StringVal(${msg.rec.data_v2.udp.peer_id}.length(), (const char*)${msg.rec.data_v2.udp.peer_id}.data()));
 				}
 
-			rv->Assign(8, zeek::val_mgr->Count(9));
+			rv->Assign(8, val_mgr->GetCount(9));
 
-			zeek::BifEvent::OpenVPN::enqueue_data_message(bro_analyzer(),
-												          bro_analyzer()->Conn(),
-												          ${msg.is_orig}, std::move(rv));
+			BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
+									   			        bro_analyzer()->Conn(),
+									   			        ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
