@@ -544,7 +544,7 @@ refine connection OpenVPN_Conn += {
 		return true;
 		%}
 
-	function forward_ssl_udp(ssl_data: bytestring, is_orig: bool) : bool
+	function forward_ssl_udp(ssl_data: bytestring, is_orig: bool, packet_id: uint32) : bool
 		%{
 		if ( ! ssl )
 			{
@@ -552,7 +552,7 @@ refine connection OpenVPN_Conn += {
 			}
 		if ( ssl )
 			{
-			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
+			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, packet_id, 0, 0);
 			}
 		return true;
 		%}
