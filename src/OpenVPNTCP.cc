@@ -11,14 +11,18 @@ OpenVPN_Analyzer::OpenVPN_Analyzer(Connection* c)
 	{
 	had_gap = false;
 	interp = new binpac::OpenVPNTCP::OpenVPN_Conn(this);
+	ssl = 0;
 	}
 
 void OpenVPN_Analyzer::Done()
 	{
 	TCP_ApplicationAnalyzer::Done();
-
 	interp->FlowEOF(true);
 	interp->FlowEOF(false);
+	if ( ssl )
+		{
+//		ssl->Done();
+		}
 	}
 
 OpenVPN_Analyzer::~OpenVPN_Analyzer()
@@ -58,6 +62,54 @@ void OpenVPN_Analyzer::DeliverStream(int len, const u_char* data, bool orig)
 		{
 		ProtocolViolation(fmt("Binpac exception: %s", e.c_msg()));
 		}
+	}
+
+void OpenVPN_Analyzer::ForwardSSLDataTCP(int len, const u_char* data, bool orig)
+	{
+		if ( !ssl )
+			{
+			ssl = reinterpret_cast<analyzer::ssl::SSL_Analyzer*>(analyzer_mgr->InstantiateAnalyzer("SSL", Conn()));
+			if ( !ssl )
+				{
+				reporter->InternalError("Could not instantiate SSL Analyzer");
+				return;
+				}
+
+			AddChildAnalyzer(ssl);
+			}
+
+		if ( ssl )
+			{
+			ssl->DeliverStream(len, data, orig);
+			}
+
+		// If there was a client hello - let's confirm this as OpenVPN
+		if ( ! ProtocolConfirmed() && ssl->ProtocolConfirmed() )
+			ProtocolConfirmation();
+	}
+
+void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id)
+	{
+		if ( !ssl )
+			{
+			ssl = reinterpret_cast<analyzer::ssl::SSL_Analyzer*>(analyzer_mgr->InstantiateAnalyzer("SSL", Conn()));
+			if ( !ssl )
+				{
+				reporter->InternalError("Could not instantiate SSL Analyzer");
+				return;
+				}
+
+			AddChildAnalyzer(ssl);
+			}
+
+		if ( ssl )
+			{
+			ssl->DeliverPacket(len, data, orig, packet_id, 0, 0);
+			}
+
+		// If there was a client hello - let's confirm this as OpenVPN
+		if ( ! ProtocolConfirmed() && ssl->ProtocolConfirmed() )
+			ProtocolConfirmation();
 	}
 
 } // namespace zeek::analyzer::openvpn::tcp
