@@ -11,33 +11,64 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !::OpenVPN::control_message)
 				return false;
-
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
-			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v1.session_id}.length(),
-										reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v1.session_id}.begin()));
-
-			auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
-			for ( size_t i=0; i < ${msg.rec.control_hard_reset_client_v1.packet_id_array}->size(); ++i )
-				acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_client_v1.packet_id_array})[i]));
-			rv->Assign(3, acks);
-
-			if (${msg.rec.control_hard_reset_client_v1.packet_id_array_len} > 0)
+			if (${msg.tcp})
 				{
-				rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_client_v1.remote_session_id}.length(),
-											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v1.remote_session_id}.begin()));
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v1.tcp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v1.tcp.session_id}.begin()));
+
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_hard_reset_client_v1.tcp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_client_v1.tcp.packet_id_array})[i]));
+				rv->Assign(3, acks);
+
+				if (${msg.rec.control_hard_reset_client_v1.tcp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_client_v1.tcp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v1.tcp.remote_session_id}.begin()));
+					}
+
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.tcp.packet_id}));
+
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(1));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
 				}
+			else
+				{
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v1.udp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v1.udp.session_id}.begin()));
 
-			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.packet_id}));
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_hard_reset_client_v1.udp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_client_v1.udp.packet_id_array})[i]));
+				rv->Assign(3, acks);
 
-			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.ssl_data}.length()));
+				if (${msg.rec.control_hard_reset_client_v1.udp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_client_v1.udp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v1.udp.remote_session_id}.begin()));
+					}
 
-			rv->Assign(8, zeek::val_mgr->Count(1));
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v1.udp.packet_id}));
 
-			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
-													         bro_analyzer()->Conn(),
-													         ${msg.is_orig}, std::move(rv));
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(1));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
+				}
 			return true;
 			}
 
@@ -45,32 +76,64 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !::OpenVPN::control_message)
 				return false;
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
-			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v1.session_id}.length(),
-										reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v1.session_id}.begin()));
-
-			auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
-			for ( size_t i=0; i < ${msg.rec.control_hard_reset_server_v1.packet_id_array}->size(); ++i )
-				acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_server_v1.packet_id_array})[i]));
-			rv->Assign(3, acks);
-
-			if (${msg.rec.control_hard_reset_server_v1.packet_id_array_len} > 0)
+			if (${msg.tcp})
 				{
-				rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_server_v1.remote_session_id}.length(),
-											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v1.remote_session_id}.begin()));
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v1.tcp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v1.tcp.session_id}.begin()));
+
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_hard_reset_server_v1.tcp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_server_v1.tcp.packet_id_array})[i]));
+				rv->Assign(3, acks);
+
+				if (${msg.rec.control_hard_reset_server_v1.tcp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_server_v1.tcp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v1.tcp.remote_session_id}.begin()));
+					}
+
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.tcp.packet_id}));
+
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(2));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
+		 		}
+			else
+				{
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v1.udp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v1.udp.session_id}.begin()));
+
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_hard_reset_server_v1.udp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_server_v1.udp.packet_id_array})[i]));
+				rv->Assign(3, acks);
+
+				if (${msg.rec.control_hard_reset_server_v1.udp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_server_v1.udp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v1.udp.remote_session_id}.begin()));
+					}
+
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.udp.packet_id}));
+
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(2));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
 				}
-
-			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.packet_id}));
-
-			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v1.ssl_data}.length()));
-
-			rv->Assign(8, zeek::val_mgr->Count(2));
-
-			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
-													         bro_analyzer()->Conn(),
-													         ${msg.is_orig}, std::move(rv));
 			return true;
 			}
 
@@ -78,32 +141,64 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !::OpenVPN::control_message)
 				return false;
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
-			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign<zeek::StringVal>(2, ${msg.rec.control_soft_reset_v1.session_id}.length(),
-										reinterpret_cast<const char*>(${msg.rec.control_soft_reset_v1.session_id}.begin()));
-
-			auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
-			for ( size_t i=0; i < ${msg.rec.control_soft_reset_v1.packet_id_array}->size(); ++i )
-				acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_soft_reset_v1.packet_id_array})[i]));
-			rv->Assign(3, acks);
-
-			if (${msg.rec.control_soft_reset_v1.packet_id_array_len} > 0)
+			if (${msg.tcp})
 				{
-				rv->Assign<zeek::StringVal>(4, ${msg.rec.control_soft_reset_v1.remote_session_id}.length(),
-											reinterpret_cast<const char*>(${msg.rec.control_soft_reset_v1.remote_session_id}.begin()));
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_soft_reset_v1.tcp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_soft_reset_v1.tcp.session_id}.begin()));
+
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_soft_reset_v1.tcp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_soft_reset_v1.tcp.packet_id_array})[i]));
+				rv->Assign(3, acks);
+
+				if (${msg.rec.control_soft_reset_v1.tcp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_soft_reset_v1.tcp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_soft_reset_v1.tcp.remote_session_id}.begin()));
+					}
+
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.tcp.packet_id}));
+
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(3));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
 				}
+			else
+				{
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_soft_reset_v1.udp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_soft_reset_v1.udp.session_id}.begin()));
 
-			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.packet_id}));
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_soft_reset_v1.udp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_soft_reset_v1.udp.packet_id_array})[i]));
+				rv->Assign(3, acks);
 
-			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.ssl_data}.length()));
+				if (${msg.rec.control_soft_reset_v1.udp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_soft_reset_v1.udp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_soft_reset_v1.udp.remote_session_id}.begin()));
+					}
 
-			rv->Assign(8, zeek::val_mgr->Count(3));
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_soft_reset_v1.udp.packet_id}));
 
-			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
-													         bro_analyzer()->Conn(),
-													         ${msg.is_orig}, std::move(rv));
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(3));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
+				}
 			return true;
 			}
 
@@ -123,32 +218,64 @@ refine connection OpenVPN_Conn += {
 					}
 				}
 
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
-			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign<zeek::StringVal>(2, ${msg.rec.control_v1.session_id}.length(),
-										reinterpret_cast<const char*>(${msg.rec.control_v1.session_id}.begin()));
-
-			auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
-			for ( size_t i=0; i < ${msg.rec.control_v1.packet_id_array}->size(); ++i )
-				acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_v1.packet_id_array})[i]));
-			rv->Assign(3, acks);
-
-			if (${msg.rec.control_v1.packet_id_array_len} > 0)
+			if (${msg.tcp})
 				{
-				rv->Assign<zeek::StringVal>(4, ${msg.rec.control_v1.remote_session_id}.length(),
-											reinterpret_cast<const char*>(${msg.rec.control_v1.remote_session_id}.begin()));
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_v1.tcp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_v1.tcp.session_id}.begin()));
+
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_v1.tcp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_v1.tcp.packet_id_array})[i]));
+				rv->Assign(3, acks);
+
+				if (${msg.rec.control_v1.tcp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_v1.tcp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_v1.tcp.remote_session_id}.begin()));
+					}
+
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_v1.tcp.packet_id}));
+
+				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_v1.tcp.ssl_data}.length()));
+
+				rv->Assign(8, zeek::val_mgr->Count(4));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
 				}
+			else
+				{
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_v1.udp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_v1.udp.session_id}.begin()));
 
-			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_v1.packet_id}));
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_v1.udp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_v1.udp.packet_id_array})[i]));
+				rv->Assign(3, acks);
 
-			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_v1.ssl_data}.length()));
+				if (${msg.rec.control_v1.udp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_v1.udp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_v1.udp.remote_session_id}.begin()));
+					}
 
-			rv->Assign(8, zeek::val_mgr->Count(4));
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_v1.udp.packet_id}));
 
-			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
-													         bro_analyzer()->Conn(),
-													         ${msg.is_orig}, std::move(rv));
+				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_v1.udp.ssl_data}.length()));
+
+				rv->Assign(8, zeek::val_mgr->Count(4));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
+				}
 			return true;
 			}
 
@@ -191,7 +318,15 @@ refine connection OpenVPN_Conn += {
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v1.payload}.length()));
+
+			if (${msg.tcp})
+				{
+				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v1.tcp.payload}.length()));
+				}
+			else
+				{
+				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v1.udp.payload}.length()));
+				}
 
 			rv->Assign(8, zeek::val_mgr->Count(6));
 
@@ -205,32 +340,64 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !::OpenVPN::control_message)
 				return false;
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
-			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v2.session_id}.length(),
-										reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v2.session_id}.begin()));
-
-			auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
-			for ( size_t i=0; i < ${msg.rec.control_hard_reset_client_v2.packet_id_array}->size(); ++i )
-				acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_client_v2.packet_id_array})[i]));
-			rv->Assign(3, acks);
-
-			if (${msg.rec.control_hard_reset_client_v2.packet_id_array_len} > 0)
+			if (${msg.tcp})
 				{
-				rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_client_v2.remote_session_id}.length(),
-											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v2.remote_session_id}.begin()));
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v2.tcp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v2.tcp.session_id}.begin()));
+
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_hard_reset_client_v2.tcp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_client_v2.tcp.packet_id_array})[i]));
+				rv->Assign(3, acks);
+
+				if (${msg.rec.control_hard_reset_client_v2.tcp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_client_v2.tcp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v2.tcp.remote_session_id}.begin()));
+					}
+
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.tcp.packet_id}));
+
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(7));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
 				}
+			else
+				{
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v2.udp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v2.udp.session_id}.begin()));
 
-			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.packet_id}));
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_hard_reset_client_v2.udp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_client_v2.udp.packet_id_array})[i]));
+				rv->Assign(3, acks);
 
-			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.ssl_data}.length()));
+				if (${msg.rec.control_hard_reset_client_v2.udp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_client_v2.udp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_hard_reset_client_v2.udp.remote_session_id}.begin()));
+					}
 
-			rv->Assign(8, zeek::val_mgr->Count(7));
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_client_v2.udp.packet_id}));
 
-			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
-													         bro_analyzer()->Conn(),
-													         ${msg.is_orig}, std::move(rv));
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(7));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
+				}
 			return true;
 			}
 
@@ -238,32 +405,64 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !::OpenVPN::control_message)
 				return false;
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
-			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
-			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v2.session_id}.length(),
-										reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v2.session_id}.begin()));
-
-			auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
-			for ( size_t i=0; i < ${msg.rec.control_hard_reset_server_v2.packet_id_array}->size(); ++i )
-				acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_server_v2.packet_id_array})[i]));
-			rv->Assign(3, acks);
-
-			if (${msg.rec.control_hard_reset_server_v2.packet_id_array_len} > 0)
+			if (${msg.tcp})
 				{
-				rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_server_v2.remote_session_id}.length(),
-											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v2.remote_session_id}.begin()));
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v2.tcp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v2.tcp.session_id}.begin()));
+
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_hard_reset_server_v2.tcp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_server_v2.tcp.packet_id_array})[i]));
+				rv->Assign(3, acks);
+
+				if (${msg.rec.control_hard_reset_server_v2.tcp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_server_v2.tcp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v2.tcp.remote_session_id}.begin()));
+					}
+
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.tcp.packet_id}));
+
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(8));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
 				}
+			else
+				{
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
+				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
+				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v2.udp.session_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v2.udp.session_id}.begin()));
 
-			rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.packet_id}));
+				auto acks = zeek::make_intrusive<zeek::VectorVal>(zeek::id::index_vec);
+				for ( size_t i=0; i < ${msg.rec.control_hard_reset_server_v2.udp.packet_id_array}->size(); ++i )
+					acks->Assign(i, zeek::val_mgr->Count((*${msg.rec.control_hard_reset_server_v2.udp.packet_id_array})[i]));
+				rv->Assign(3, acks);
 
-			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.ssl_data}.length()));
+				if (${msg.rec.control_hard_reset_server_v2.udp.packet_id_array_len} > 0)
+					{
+					rv->Assign<zeek::StringVal>(4, ${msg.rec.control_hard_reset_server_v2.udp.remote_session_id}.length(),
+												reinterpret_cast<const char*>(${msg.rec.control_hard_reset_server_v2.udp.remote_session_id}.begin()));
+					}
 
-			rv->Assign(8, zeek::val_mgr->Count(8));
+				rv->Assign(5, zeek::val_mgr->Count(${msg.rec.control_hard_reset_server_v2.udp.packet_id}));
 
-			zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
-													         bro_analyzer()->Conn(),
-													         ${msg.is_orig}, std::move(rv));
+				rv->Assign(6, zeek::val_mgr->Count(0));
+
+				rv->Assign(8, zeek::val_mgr->Count(8));
+
+				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
+																 bro_analyzer()->Conn(),
+																 ${msg.is_orig}, std::move(rv));
+				}
 			return true;
 			}
 
@@ -278,9 +477,19 @@ refine connection OpenVPN_Conn += {
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
-			rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v2.payload}.length()));
-			rv->Assign<zeek::StringVal>(7, ${msg.rec.data_v2.peer_id}.length(),
-										reinterpret_cast<const char*>(${msg.rec.data_v2.peer_id}.begin()));
+
+			if (${msg.tcp})
+				{
+				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v2.tcp.payload}.length()));
+				rv->Assign<zeek::StringVal>(7, ${msg.rec.data_v2.tcp.peer_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.data_v2.tcp.peer_id}.begin()));
+				}
+			else
+				{
+				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v2.udp.payload}.length()));
+				rv->Assign<zeek::StringVal>(7, ${msg.rec.data_v2.udp.peer_id}.length(),
+											reinterpret_cast<const char*>(${msg.rec.data_v2.udp.peer_id}.begin()));
+				}
 
 			rv->Assign(8, zeek::val_mgr->Count(9));
 
@@ -317,7 +526,7 @@ refine connection OpenVPN_Conn += {
 			}
 	%}
 
-	function forward_ssl(ssl_data: bytestring, is_orig: bool, is_tcp: bool) : bool
+	function forward_ssl_tcp(ssl_data: bytestring, is_orig: bool) : bool
 		%{
 		if ( ! ssl )
 			{
@@ -325,15 +534,22 @@ refine connection OpenVPN_Conn += {
 			}
 		if ( ssl )
 			{
-			if (is_tcp)
-				{
-	  			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
-				}
-			else
-				{
-	  			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
-				}
+			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
 			}
 		return true;
 		%}
+
+	function forward_ssl_udp(ssl_data: bytestring, is_orig: bool) : bool
+		%{
+		if ( ! ssl )
+			{
+			ssl = new analyzer::ssl::SSL_Analyzer(bro_analyzer()->Conn());
+			}
+		if ( ssl )
+			{
+			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
+			}
+		return true;
+		%}
+
 };
