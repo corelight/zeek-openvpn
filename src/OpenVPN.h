@@ -24,12 +24,15 @@ public:
 	void Done() override;
 	void DeliverPacket(int len, const u_char* data, bool orig,
 					uint64_t seq, const IP_Hdr* ip, int caplen) override;
+	void ForwardSSLDataTCP(int len, const u_char* data, bool orig);
+	void ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id);
 
 	static ::analyzer::Analyzer* Instantiate(Connection* conn)
 		{ return new OpenVPN_Analyzer(conn); }
 
 protected:
 	binpac::OpenVPN::OpenVPN_Conn* interp;
+	analyzer::ssl::SSL_Analyzer *ssl;
 };
 
 } // namespace zeek::analyzer::openvpn

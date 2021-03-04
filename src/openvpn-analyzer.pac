@@ -292,7 +292,7 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if (seen_control_orig && seen_control_resp)
+			if (seen_control_orig && seen_control_resp && !bro_analyzer()->ProtocolConfirmed())
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
@@ -445,7 +445,7 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
-			if (seen_control_orig && seen_control_resp)
+			if (seen_control_orig && seen_control_resp && !bro_analyzer()->ProtocolConfirmed())
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
@@ -482,51 +482,4 @@ refine connection OpenVPN_Conn += {
 
 refine typeattr OpenVPNRecord += &let {
 	proc: bool = $context.connection.proc_openvpn_message(this);
-};
-
-refine connection OpenVPN_Conn += {
-
-	%member{
-		analyzer::ssl::SSL_Analyzer *ssl;
-	%}
-
-	%init{
-		ssl = 0;
-	%}
-
-	%cleanup{
-		if ( ssl )
-			{
-			ssl->Done();
-			delete ssl;
-			ssl = 0;
-			}
-	%}
-
-	function forward_ssl_tcp(ssl_data: bytestring, is_orig: bool) : bool
-		%{
-		if ( ! ssl )
-			{
-			ssl = new analyzer::ssl::SSL_Analyzer(bro_analyzer()->Conn());
-			}
-		if ( ssl )
-			{
-			ssl->DeliverStream(${ssl_data}.length(), ${ssl_data}.begin(), is_orig);
-			}
-		return true;
-		%}
-
-	function forward_ssl_udp(ssl_data: bytestring, is_orig: bool) : bool
-		%{
-		if ( ! ssl )
-			{
-			ssl = new analyzer::ssl::SSL_Analyzer(bro_analyzer()->Conn());
-			}
-		if ( ssl )
-			{
-			ssl->DeliverPacket(${ssl_data}.length(), ${ssl_data}.begin(), is_orig, 0, 0, 0);
-			}
-		return true;
-		%}
-
 };

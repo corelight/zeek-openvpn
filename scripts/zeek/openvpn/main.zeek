@@ -27,25 +27,28 @@ function set_session(c: connection)
 
 event protocol_confirmation(c: connection, atype: Analyzer::Tag, aid: count) &priority=5
 	{
+	set_session(c);
 	if ( atype == Analyzer::ANALYZER_OPENVPN || atype == Analyzer::ANALYZER_OPENVPNHMAC || atype == Analyzer::ANALYZER_OPENVPNTCP || atype == Analyzer::ANALYZER_OPENVPNTCPHMAC )
 		{
-		set_session(c);
 		c$openvpn$analyzer_id = aid;
 		}
 	}
 
 event OpenVPN::control_message(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg) &priority=5
 	{
+	set_session(c);
 	msg$msg_type_str = OpenVPN::msg_types[msg$msg_type];
 	}
 
 event OpenVPN::ack_message(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg) &priority=5
 	{
+	set_session(c);
 	msg$msg_type_str = OpenVPN::msg_types[msg$msg_type];
 	}
 
 event OpenVPN::data_message(c: connection, is_orig: bool, msg: OpenVPN::ParsedMsg) &priority=5
 	{
+	set_session(c);
 	msg$msg_type_str = OpenVPN::msg_types[msg$msg_type];
 	}
 
