@@ -35,6 +35,12 @@ Now in any Zeek script, just load the plugin and it "just works":
 
 New events for this plugin are found in [events.bif](src/events.bif).
 
+#### Additional Documentation:
+
+- https://build.openvpn.net/doxygen/network_protocol.html
+- https://openvpn.net/community-resources/openvpn-protocol/
+- https://wiki.wireshark.org/OpenVPN
+
 ### License:
 
 Copyright (c) 2021, Corelight, Inc. All rights reserved.
