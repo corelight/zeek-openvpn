@@ -68,6 +68,7 @@ void OpenVPN_Analyzer::ForwardSSLDataTCP(int len, const u_char* data, bool orig)
 
 void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id)
 	{
+#ifdef SSL_HAS_NEWDATA_FUNCTION
 	// This will check if sequences are in order and stop sending if not.
 	if (orig)
 		{
@@ -120,13 +121,12 @@ void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig,
 
 	if ( ssl )
 		{
-		ssl->DeliverPacket(len, data, orig, packet_id, 0, 0);
+		ssl->NewData(len, data, orig);
 		}
 
 	// If there was a client hello - let's confirm this as OpenVPN
 	if ( ! ProtocolConfirmed() && ssl->ProtocolConfirmed() )
 		ProtocolConfirmation();
+#endif
 	}
-
-
 } // namespace zeek::analyzer::openvpn

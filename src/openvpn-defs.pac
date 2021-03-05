@@ -68,7 +68,7 @@ type ControlUDP(rec: OpenVPNRecord, control_v1: bool) = record {
 	packet_id : uint32;
 	ssl_data : bytestring &restofdata;
 } &let {
-#	ssl_data_forwarded : bool = $context.connection.forward_ssl_udp(ssl_data, rec.is_orig, packet_id) &if(control_v1 == true);
+	ssl_data_forwarded : bool = $context.connection.forward_ssl_udp(ssl_data, rec.is_orig, packet_id) &if(control_v1 == true);
 };
 
 type ControlTCP(rec: OpenVPNRecord, control_v1: bool) = record {
