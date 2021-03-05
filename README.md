@@ -11,6 +11,10 @@ A plugin to detect and parse OpenVPN in the following modes:
 
 So far this will not detect shared key mode for UDP or TCP.
 
+If this protocol analyzer is able to parse the TLS information
+you will find data in your ssl.log.  TCP TLS support works,
+and UDP TLS support will be coming in Zeek >= v4.1.
+
 If you have zkg and you have already run...
 
 ```
@@ -30,6 +34,12 @@ Now in any Zeek script, just load the plugin and it "just works":
 ```
 
 New events for this plugin are found in [events.bif](src/events.bif).
+
+#### Additional Documentation:
+
+- https://build.openvpn.net/doxygen/network_protocol.html
+- https://openvpn.net/community-resources/openvpn-protocol/
+- https://wiki.wireshark.org/OpenVPN
 
 ### License:
 
