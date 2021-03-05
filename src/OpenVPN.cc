@@ -97,7 +97,7 @@ void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig,
 
 	if ( ssl )
 		{
-		ssl->DeliverSteam(len, data, orig);
+		ssl->DeliverStream(len, data, orig);
 		}
 
 	// If there was a client hello - let's confirm this as OpenVPN
