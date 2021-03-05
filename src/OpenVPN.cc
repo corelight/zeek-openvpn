@@ -44,26 +44,6 @@ void OpenVPN_Analyzer::DeliverPacket(int len, const u_char* data, bool orig,
 
 void OpenVPN_Analyzer::ForwardSSLDataTCP(int len, const u_char* data, bool orig)
 	{
-	if ( !ssl )
-		{
-		ssl = reinterpret_cast<analyzer::ssl::SSL_Analyzer*>(analyzer_mgr->InstantiateAnalyzer("SSL", Conn()));
-		if ( !ssl )
-			{
-			reporter->InternalError("Could not instantiate SSL Analyzer");
-			return;
-			}
-
-		AddChildAnalyzer(ssl);
-		}
-
-	if ( ssl )
-		{
-		ssl->DeliverStream(len, data, orig);
-		}
-
-	// If there was a client hello - let's confirm this as OpenVPN
-	if ( ! ProtocolConfirmed() && ssl->ProtocolConfirmed() )
-		ProtocolConfirmation();
 	}
 
 void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id)
