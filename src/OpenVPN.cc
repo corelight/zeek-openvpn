@@ -42,10 +42,6 @@ void OpenVPN_Analyzer::DeliverPacket(int len, const u_char* data, bool orig,
 		}
 	}
 
-void OpenVPN_Analyzer::ForwardSSLDataTCP(int len, const u_char* data, bool orig)
-	{
-	}
-
 void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id)
 	{
 #ifdef SSL_HAS_NEWDATA_FUNCTION

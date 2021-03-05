@@ -88,7 +88,4 @@ void OpenVPN_Analyzer::ForwardSSLDataTCP(int len, const u_char* data, bool orig)
 		ProtocolConfirmation();
 	}
 
-void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id)
-	{
-	}
 } // namespace zeek::analyzer::openvpn::tcp
