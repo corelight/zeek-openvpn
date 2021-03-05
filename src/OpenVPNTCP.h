@@ -20,13 +20,12 @@ public:
 	explicit OpenVPN_Analyzer(Connection* conn);
 	~OpenVPN_Analyzer() override;
 
-	// Overriden from Analyzer.
+	// Overridden from Analyzer.
 	void Done() override;
 	void DeliverStream(int len, const u_char* data, bool orig) override;
 	void Undelivered(uint64_t seq, int len, bool orig) override;
 	void EndpointEOF(bool is_orig) override;
 	void ForwardSSLDataTCP(int len, const u_char* data, bool orig);
-	void ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id);
 
 	static ::analyzer::Analyzer* Instantiate(Connection* conn)
 		{ return new OpenVPN_Analyzer(conn); }
