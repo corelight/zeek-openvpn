@@ -44,7 +44,7 @@ void OpenVPN_Analyzer::DeliverPacket(int len, const u_char* data, bool orig,
 
 void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id)
 	{
-#ifdef SSL_HAS_NEWDATA_FUNCTION
+#if ZEEK_VERSION_NUMBER >= 40100
 	// This will check if sequences are in order and stop sending if not.
 	if (orig)
 		{
