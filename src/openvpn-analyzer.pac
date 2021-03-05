@@ -13,7 +13,7 @@ refine connection OpenVPN_Conn += {
 				return false;
 			if (${msg.tcp})
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v1.tcp.session_id}.length(),
@@ -34,7 +34,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(1));
+				rv->Assign(7, zeek::val_mgr->Count(1));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -42,7 +42,7 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v1.udp.session_id}.length(),
@@ -63,7 +63,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(1));
+				rv->Assign(7, zeek::val_mgr->Count(1));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -78,7 +78,7 @@ refine connection OpenVPN_Conn += {
 				return false;
 			if (${msg.tcp})
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v1.tcp.session_id}.length(),
@@ -99,7 +99,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(2));
+				rv->Assign(7, zeek::val_mgr->Count(2));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -107,7 +107,7 @@ refine connection OpenVPN_Conn += {
 		 		}
 			else
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v1.udp.session_id}.length(),
@@ -128,7 +128,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(2));
+				rv->Assign(7, zeek::val_mgr->Count(2));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -143,7 +143,7 @@ refine connection OpenVPN_Conn += {
 				return false;
 			if (${msg.tcp})
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_soft_reset_v1.tcp.session_id}.length(),
@@ -164,7 +164,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(3));
+				rv->Assign(7, zeek::val_mgr->Count(3));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -172,7 +172,7 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_soft_reset_v1.udp.session_id}.length(),
@@ -193,7 +193,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(3));
+				rv->Assign(7, zeek::val_mgr->Count(3));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -221,7 +221,7 @@ refine connection OpenVPN_Conn += {
 
 			if (${msg.tcp})
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_v1.tcp.session_id}.length(),
@@ -242,7 +242,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_v1.tcp.ssl_data}.length()));
 
-				rv->Assign(8, zeek::val_mgr->Count(4));
+				rv->Assign(7, zeek::val_mgr->Count(4));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -250,7 +250,7 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_v1.udp.session_id}.length(),
@@ -271,7 +271,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.control_v1.udp.ssl_data}.length()));
 
-				rv->Assign(8, zeek::val_mgr->Count(4));
+				rv->Assign(7, zeek::val_mgr->Count(4));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -284,7 +284,7 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !::OpenVPN::ack_message)
 				return false;
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::AckMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 			rv->Assign<zeek::StringVal>(2, ${msg.rec.ack_v1.session_id}.length(),
@@ -298,9 +298,7 @@ refine connection OpenVPN_Conn += {
 			rv->Assign<zeek::StringVal>(4, ${msg.rec.ack_v1.remote_session_id}.length(),
 										reinterpret_cast<const char*>(${msg.rec.ack_v1.remote_session_id}.begin()));
 
-			rv->Assign(6, zeek::val_mgr->Count(0));
-
-			rv->Assign(8, zeek::val_mgr->Count(5));
+			rv->Assign(5, zeek::val_mgr->Count(5));
 
 			zeek::BifEvent::OpenVPN::enqueue_ack_message(bro_analyzer(),
 												         bro_analyzer()->Conn(),
@@ -318,20 +316,20 @@ refine connection OpenVPN_Conn += {
 			if ( !::OpenVPN::data_message)
 				return false;
 
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::DataMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 
 			if (${msg.tcp})
 				{
-				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v1.tcp.payload}.length()));
+				rv->Assign(2, zeek::val_mgr->Count(${msg.rec.data_v1.tcp.payload}.length()));
 				}
 			else
 				{
-				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v1.udp.payload}.length()));
+				rv->Assign(2, zeek::val_mgr->Count(${msg.rec.data_v1.udp.payload}.length()));
 				}
 
-			rv->Assign(8, zeek::val_mgr->Count(6));
+			rv->Assign(4, zeek::val_mgr->Count(6));
 
 			zeek::BifEvent::OpenVPN::enqueue_data_message(bro_analyzer(),
 												          bro_analyzer()->Conn(),
@@ -345,7 +343,7 @@ refine connection OpenVPN_Conn += {
 				return false;
 			if (${msg.tcp})
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v2.tcp.session_id}.length(),
@@ -366,7 +364,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(7));
+				rv->Assign(7, zeek::val_mgr->Count(7));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -374,7 +372,7 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_client_v2.udp.session_id}.length(),
@@ -395,7 +393,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(7));
+				rv->Assign(7, zeek::val_mgr->Count(7));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -410,7 +408,7 @@ refine connection OpenVPN_Conn += {
 				return false;
 			if (${msg.tcp})
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v2.tcp.session_id}.length(),
@@ -431,7 +429,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(8));
+				rv->Assign(7, zeek::val_mgr->Count(8));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -439,7 +437,7 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
-				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 				rv->Assign<zeek::StringVal>(2, ${msg.rec.control_hard_reset_server_v2.udp.session_id}.length(),
@@ -460,7 +458,7 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, zeek::val_mgr->Count(0));
 
-				rv->Assign(8, zeek::val_mgr->Count(8));
+				rv->Assign(7, zeek::val_mgr->Count(8));
 
 				zeek::BifEvent::OpenVPN::enqueue_control_message(bro_analyzer(),
 																 bro_analyzer()->Conn(),
@@ -479,24 +477,24 @@ refine connection OpenVPN_Conn += {
 			if ( !::OpenVPN::data_message)
 				return false;
 				
-			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ParsedMsg);
+			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 			rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 			rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
 
 			if (${msg.tcp})
 				{
-				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v2.tcp.payload}.length()));
-				rv->Assign<zeek::StringVal>(7, ${msg.rec.data_v2.tcp.peer_id}.length(),
+				rv->Assign(2, zeek::val_mgr->Count(${msg.rec.data_v2.tcp.payload}.length()));
+				rv->Assign<zeek::StringVal>(3, ${msg.rec.data_v2.tcp.peer_id}.length(),
 											reinterpret_cast<const char*>(${msg.rec.data_v2.tcp.peer_id}.begin()));
 				}
 			else
 				{
-				rv->Assign(6, zeek::val_mgr->Count(${msg.rec.data_v2.udp.payload}.length()));
-				rv->Assign<zeek::StringVal>(7, ${msg.rec.data_v2.udp.peer_id}.length(),
+				rv->Assign(2, zeek::val_mgr->Count(${msg.rec.data_v2.udp.payload}.length()));
+				rv->Assign<zeek::StringVal>(3, ${msg.rec.data_v2.udp.peer_id}.length(),
 											reinterpret_cast<const char*>(${msg.rec.data_v2.udp.peer_id}.begin()));
 				}
 
-			rv->Assign(8, zeek::val_mgr->Count(9));
+			rv->Assign(4, zeek::val_mgr->Count(9));
 
 			zeek::BifEvent::OpenVPN::enqueue_data_message(bro_analyzer(),
 												          bro_analyzer()->Conn(),

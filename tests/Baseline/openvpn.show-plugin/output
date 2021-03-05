@@ -3,7 +3,9 @@ zeek::openvpn - Zeek OpenVPN Protocol Analyzer (dynamic, version)
     [Analyzer] OpenVPNHMAC (ANALYZER_OPENVPNHMAC, enabled)
     [Analyzer] OpenVPNTCP (ANALYZER_OPENVPNTCP, enabled)
     [Analyzer] OpenVPNTCPHMAC (ANALYZER_OPENVPNTCPHMAC, enabled)
-    [Type] OpenVPN::ParsedMsg
+    [Type] OpenVPN::ControlMsg
+    [Type] OpenVPN::AckMsg
+    [Type] OpenVPN::DataMsg
     [Event] OpenVPN::control_message
     [Event] OpenVPN::data_message
     [Event] OpenVPN::ack_message

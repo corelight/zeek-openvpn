@@ -3,9 +3,9 @@
 #empty_field	(empty)
 #unset_field	-
 #path	ssl
-#open	2021-03-04-19-48-49
+#open	2021-03-05-12-25-53
 #fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	version	cipher	curve	server_name	resumed	last_alert	next_protocol	established	cert_chain_fuids	client_cert_chain_fuids	subject	issuer	client_subject	client_issuer
 #types	time	string	addr	port	addr	port	string	string	string	string	bool	string	string	bool	vector[string]	vector[string]	string	string	string	string
 1358897405.980495	CHhAvVGS1DHFjwGM9	192.168.56.103	51089	192.168.56.102	1194	TLSv10	TLS_DHE_RSA_WITH_AES_256_CBC_SHA	-	-	F	-	-	T	F6eihLYq7gQB0Aa67,F7BSGB1cg8CAtigrP2	F5puEp1u9BU3wbfTg1,F7QZAudB2XY6ofk4f	emailAddress=PRO3,name=PRO3,CN=PRO3,OU=PRO3,O=PRO3,L=PRO3,ST=OE,C=AT	emailAddress=PRO3,name=PRO3,CN=PRO3,OU=PRO3,O=PRO3,L=PRO3,ST=OE,C=AT	emailAddress=PRO3,name=PRO3,CN=PRO3-Client_2,OU=PRO3,O=PRO3,L=PRO3,ST=OE,C=AT	emailAddress=PRO3,name=PRO3,CN=PRO3,OU=PRO3,O=PRO3,L=PRO3,ST=OE,C=AT
 1358897411.942631	ClEkJM2Vm5giqnMf4h	192.168.56.104	55161	192.168.56.102	1194	TLSv10	TLS_DHE_RSA_WITH_AES_256_CBC_SHA	-	-	F	-	-	T	Fh7Ycw2FhusF232jB,Fi7YMv3ln4XjPbI4D4	FSLK442dG4TNhyVpvg,FnjpFj17iLS7lTWFGl	emailAddress=PRO3,name=PRO3,CN=PRO3,OU=PRO3,O=PRO3,L=PRO3,ST=OE,C=AT	emailAddress=PRO3,name=PRO3,CN=PRO3,OU=PRO3,O=PRO3,L=PRO3,ST=OE,C=AT	emailAddress=PRO3,name=PRO3,CN=PRO3-Client,OU=PRO3,O=PRO3,L=PRO3,ST=OE,C=AT	emailAddress=PRO3,name=PRO3,CN=PRO3,OU=PRO3,O=PRO3,L=PRO3,ST=OE,C=AT
-#close	2021-03-04-19-48-49
+#close	2021-03-05-12-25-53
