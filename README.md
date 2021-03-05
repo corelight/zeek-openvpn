@@ -13,7 +13,7 @@ So far this will not detect shared key mode for UDP or TCP.
 
 If this protocol analyzer is able to parse the TLS information
 you will find data in your ssl.log.  TCP TLS support works,
-and UDP TLS support will be coming in Zeek >= v4.1.  If really want
+and UDP TLS support will be coming in Zeek >= v4.1.  If you really want
 the functionality you can install this change and UDP will also work:
 
 https://github.com/zeek/zeek/pull/1428
