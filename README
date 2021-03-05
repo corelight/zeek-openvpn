@@ -34,6 +34,7 @@ Now in any Zeek script, just load the plugin and it "just works":
 ```
 
 New events for this plugin are found in [events.bif](src/events.bif).
+The arguments to the events can be found in [types.zeek](scripts/types.zeek).
 
 #### Additional Documentation:
 
