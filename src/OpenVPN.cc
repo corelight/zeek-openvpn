@@ -10,7 +10,6 @@ OpenVPN_Analyzer::OpenVPN_Analyzer(Connection* c)
 	: ::analyzer::Analyzer("OpenVPN", c)
 	{
 	interp = new binpac::OpenVPN::OpenVPN_Conn(this);
-	ssl = 0;
 	}
 
 void OpenVPN_Analyzer::Done()
@@ -45,51 +44,89 @@ void OpenVPN_Analyzer::DeliverPacket(int len, const u_char* data, bool orig,
 
 void OpenVPN_Analyzer::ForwardSSLDataTCP(int len, const u_char* data, bool orig)
 	{
+	if ( !ssl )
+		{
+		ssl = reinterpret_cast<analyzer::ssl::SSL_Analyzer*>(analyzer_mgr->InstantiateAnalyzer("SSL", Conn()));
 		if ( !ssl )
 			{
-			ssl = reinterpret_cast<analyzer::ssl::SSL_Analyzer*>(analyzer_mgr->InstantiateAnalyzer("SSL", Conn()));
-			if ( !ssl )
-				{
-				reporter->InternalError("Could not instantiate SSL Analyzer");
-				return;
-				}
-
-			AddChildAnalyzer(ssl);
+			reporter->InternalError("Could not instantiate SSL Analyzer");
+			return;
 			}
 
-		if ( ssl )
-			{
-			ssl->DeliverStream(len, data, orig);
-			}
+		AddChildAnalyzer(ssl);
+		}
 
-		// If there was a client hello - let's confirm this as OpenVPN
-		if ( ! ProtocolConfirmed() && ssl->ProtocolConfirmed() )
-			ProtocolConfirmation();
+	if ( ssl )
+		{
+		ssl->DeliverStream(len, data, orig);
+		}
+
+	// If there was a client hello - let's confirm this as OpenVPN
+	if ( ! ProtocolConfirmed() && ssl->ProtocolConfirmed() )
+		ProtocolConfirmation();
 	}
 
 void OpenVPN_Analyzer::ForwardSSLDataUDP(int len, const u_char* data, bool orig, uint32_t packet_id)
 	{
-		if ( !ssl )
+#ifdef SSL_HAS_NEWDATA_FUNCTION
+	// This will check if sequences are in order and stop sending if not.
+	if (orig)
+		{
+		if (orig_seq == 0)
 			{
-			ssl = reinterpret_cast<analyzer::ssl::SSL_Analyzer*>(analyzer_mgr->InstantiateAnalyzer("SSL", Conn()));
-			if ( !ssl )
+			orig_seq = packet_id;
+			}
+		else
+			{
+			if (packet_id == orig_seq+1)
 				{
-				reporter->InternalError("Could not instantiate SSL Analyzer");
+				orig_seq = packet_id;
+				}
+			else
+				{
 				return;
 				}
-
-			AddChildAnalyzer(ssl);
 			}
-
-		if ( ssl )
+		}
+	else
+		{
+		if (resp_seq == 0)
 			{
-			ssl->DeliverPacket(len, data, orig, packet_id, 0, 0);
+			resp_seq = packet_id;
+			}
+		else
+			{
+			if (packet_id == resp_seq+1)
+				{
+				resp_seq = packet_id;
+				}
+			else
+				{
+				return;
+				}
+			}
+		}
+
+	if ( !ssl )
+		{
+		ssl = reinterpret_cast<analyzer::ssl::SSL_Analyzer*>(analyzer_mgr->InstantiateAnalyzer("SSL", Conn()));
+		if ( !ssl )
+			{
+			reporter->InternalError("Could not instantiate SSL Analyzer");
+			return;
 			}
 
-		// If there was a client hello - let's confirm this as OpenVPN
-		if ( ! ProtocolConfirmed() && ssl->ProtocolConfirmed() )
-			ProtocolConfirmation();
+		AddChildAnalyzer(ssl);
+		}
+
+	if ( ssl )
+		{
+		ssl->NewData(len, data, orig);
+		}
+
+	// If there was a client hello - let's confirm this as OpenVPN
+	if ( ! ProtocolConfirmed() && ssl->ProtocolConfirmed() )
+		ProtocolConfirmation();
+#endif
 	}
-
-
 } // namespace zeek::analyzer::openvpn

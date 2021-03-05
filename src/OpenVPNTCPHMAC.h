@@ -34,7 +34,10 @@ public:
 protected:
 	bool had_gap;
 	binpac::OpenVPNTCPHMAC::OpenVPN_Conn* interp;
-	analyzer::ssl::SSL_Analyzer *ssl;
+	analyzer::ssl::SSL_Analyzer *ssl = nullptr;
+	// Used for limited UDP tracking
+	uint64_t orig_seq = 0;
+	uint64_t resp_seq = 0;
 };
 
 } // namespace zeek::analyzer::openvpn::tcp

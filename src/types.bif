@@ -1,3 +1,5 @@
 module OpenVPN;
 
-type OpenVPN::ParsedMsg: record;
+type OpenVPN::ControlMsg: record;
+type OpenVPN::AckMsg: record;
+type OpenVPN::DataMsg: record;
