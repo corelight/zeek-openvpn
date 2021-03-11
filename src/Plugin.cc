@@ -16,6 +16,6 @@ zeek::plugin::Configuration Plugin::Configure()
 	config.description = "Zeek OpenVPN Protocol Analyzer";
 	config.version.major = 0;
 	config.version.minor = 0;
-	config.version.patch = 2;
+	config.version.patch = 3;
 	return config;
 	}
