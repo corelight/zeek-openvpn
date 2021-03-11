@@ -1,6 +1,6 @@
 #include "OpenVPN.h"
 
-#include <zeek/Reporter.h>
+#include <Reporter.h>
 
 #include "events.bif.h"
 
