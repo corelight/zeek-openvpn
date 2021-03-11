@@ -1,6 +1,6 @@
 #include "OpenVPNTCP.h"
 
-#include <zeek/Reporter.h>
+#include <Reporter.h>
 
 #include "events.bif.h"
 
