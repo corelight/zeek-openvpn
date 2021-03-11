@@ -13,9 +13,9 @@ using namespace plugin::zeek_openvpn;
 	AddComponent(new ::analyzer::Component("OpenVPNTCPHMAC", ::analyzer::openvpn::tcp::hmac::OpenVPN_Analyzer::Instantiate));
 	::plugin::Configuration config;
 	config.name = "zeek::openvpn";
-	config.description = "Zeek OpenVPN Protocol Analyzer";
+	config.description = "A Zeek OpenVPN Protocol Analyzer";
 	config.version.major = 0;
 	config.version.minor = 0;
-	config.version.patch = 3;
+	config.version.patch = 4;
 	return config;
 	}

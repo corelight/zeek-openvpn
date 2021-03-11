@@ -1,6 +1,8 @@
 [package]
-description = Zeek OpenVPN Protocol Analyzer
+description = A Zeek OpenVPN Protocol Analyzer
 script_dir = scripts/zeek/openvpn
-build_command = ./configure --enable-debug --zeek-dist=%(zeek_dist)s && make
+build_command = ./configure --zeek-dist=%(zeek_dist)s && make
+#build_command = ./configure --enable-debug --zeek-dist=%(zeek_dist)s && make
+#build_command = ./configure && make
 #build_command = ./configure --enable-debug && make
 test_command = cd tests && btest
