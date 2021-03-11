@@ -1,7 +1,7 @@
 #pragma once
 
-#include "analyzer/protocol/tcp/TCP.h"
-#include "analyzer/protocol/ssl/SSL.h"
+#include "zeek/analyzer/protocol/tcp/TCP.h"
+#include "zeek/analyzer/protocol/ssl/SSL.h"
 
 #include "events.bif.h"
 #include "types.bif.h"

@@ -1,6 +1,6 @@
 #include "OpenVPNTCPHMAC.h"
 
-#include <Reporter.h>
+#include <zeek/Reporter.h>
 
 #include "events.bif.h"
 

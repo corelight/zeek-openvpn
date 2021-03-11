@@ -1,7 +1,7 @@
 #pragma once
 
-#include "analyzer/protocol/udp/UDP.h"
-#include "analyzer/protocol/ssl/SSL.h"
+#include "zeek/analyzer/protocol/udp/UDP.h"
+#include "zeek/analyzer/protocol/ssl/SSL.h"
 
 #include "events.bif.h"
 #include "types.bif.h"

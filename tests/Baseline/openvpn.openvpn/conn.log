@@ -3,7 +3,7 @@
 #empty_field	(empty)
 #unset_field	-
 #path	conn
-#open	2021-03-05-12-53-36
+#open	2021-03-05-12-25-48
 #fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	service	duration	orig_bytes	resp_bytes	conn_state	local_orig	local_resp	missed_bytes	history	orig_pkts	orig_ip_bytes	resp_pkts	resp_ip_bytes	tunnel_parents
 #types	time	string	addr	port	addr	port	enum	string	interval	count	count	string	bool	bool	count	string	count	count	count	count	set[string]
 1613755354.147843	Cb7w0T1dHZUPXzdgRi	192.168.88.3	40010	192.168.88.1	53	udp	dns	0.050225	58	182	SF	-	-	0	Dd	1	86	1	210	-
@@ -132,7 +132,7 @@
 1613755410.153141	CkgPZ03tcwpxYjnOSc	192.168.88.3	58279	192.168.88.1	53	udp	dns	0.000827	45	106	SF	-	-	0	Dd	1	73	1	134	-
 1613755354.200870	COvnS21VmREmS5Xzuf	192.168.88.3	49128	23.51.186.25	443	tcp	ssl	0.166047	860	7268	S1	-	-	0	ShADad	11	1440	12	7900	-
 1613755355.148465	CpKJJiDUPEBNMGSC	192.168.88.3	56854	143.244.45.60	443	tcp	ssl	0.860958	807	99091	S1	-	-	0	ShADad	42	2999	77	103103	-
-1613755368.960989	CUTgljebkkh2Ydhzi	192.168.88.3	50568	46.246.122.61	1198	udp	openvpn,ssl	44.271572	5825	8524	SF	-	-	0	Dd	57	7421	48	9868	-
+1613755368.960989	CUTgljebkkh2Ydhzi	192.168.88.3	50568	46.246.122.61	1198	udp	openvpn	44.271572	5825	8524	SF	-	-	0	Dd	57	7421	48	9868	-
 1613755357.232793	C5II0Z3yZFhDzHSKrl	46.246.122.62	1198	192.168.88.3	56414	udp	-	54.003052	246	0	S0	-	-	0	D	6	414	0	0	-
 1613755348.629817	CHhAvVGS1DHFjwGM9	192.168.88.1	54915	192.168.88.255	54915	udp	-	66.001500	17621	0	S0	-	-	0	D	67	19497	0	0	-
 1613755376.759212	CS9xQJ3Jly032E9jC2	192.168.88.1	57621	192.168.88.255	57621	udp	-	30.005531	88	0	S0	-	-	0	D	2	144	0	0	-
@@ -237,4 +237,4 @@
 1613755413.157760	COJL3m2IFflzZ1Cvdk	192.168.88.3	8	217.138.193.164	0	icmp	-	0.211254	56	56	OTH	-	-	0	-	1	84	1	84	-
 1613755413.156199	CBMc5Bq8xeq3TqHyl	192.168.88.3	8	217.138.211.248	0	icmp	-	0.099736	56	56	OTH	-	-	0	-	1	84	1	84	-
 1613755413.155902	CQKymemsGWxk8qNhi	192.168.88.3	8	217.138.221.74	0	icmp	-	0.137668	56	56	OTH	-	-	0	-	1	84	1	84	-
-#close	2021-03-05-12-53-36
+#close	2021-03-05-12-25-49
