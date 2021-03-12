@@ -3,14 +3,22 @@ refine connection OpenVPN_Conn += {
 	%member{
 		bool seen_control_orig = false;
 		bool seen_control_resp = false;
+		bool seen_reset_client = false;
+		bool seen_handshake = false;
 	%}
 
 	function proc_openvpn_message(msg: OpenVPNRecord): bool
 		%{
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V1 )
 			{
+			if ( !${msg.is_orig} )
+				return false;
+
+			seen_reset_client = true;
+
 			if ( !::OpenVPN::control_message)
 				return false;
+
 			if (${msg.tcp})
 				{
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
@@ -74,8 +82,14 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V1 )
 			{
+			if ( ${msg.is_orig} || !seen_reset_client )
+				return false;
+
+			seen_handshake = true;
+
 			if ( !::OpenVPN::control_message)
 				return false;
+
 			if (${msg.tcp})
 				{
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
@@ -139,8 +153,12 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_SOFT_RESET_V1 )
 			{
+			if ( !seen_handshake )
+				return false;
+
 			if ( !::OpenVPN::control_message)
 				return false;
+				
 			if (${msg.tcp})
 				{
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
@@ -204,6 +222,9 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
+			if ( !seen_handshake )
+				return false;
+
 			if (${msg.is_orig})
 				{
 				seen_control_orig = true;
@@ -282,6 +303,8 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_ACK_V1 )
 			{
+			if ( !seen_handshake )
+				return false;
 			if ( !::OpenVPN::ack_message)
 				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::AckMsg);
@@ -308,7 +331,13 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if (seen_control_orig && seen_control_resp && !bro_analyzer()->ProtocolConfirmed())
+			if ( !seen_handshake )
+				return false;
+
+			if (!seen_control_orig || !seen_control_resp)
+				return false;
+
+			if (!bro_analyzer()->ProtocolConfirmed())
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
@@ -339,8 +368,14 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V2 )
 			{
+			if ( !${msg.is_orig} )
+				return false;
+
+			seen_reset_client = true;
+
 			if ( !::OpenVPN::control_message)
 				return false;
+
 			if (${msg.tcp})
 				{
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
@@ -404,8 +439,14 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V2 )
 			{
+			if ( ${msg.is_orig} || !seen_reset_client )
+				return false;
+
+			seen_handshake = true;
+
 			if ( !::OpenVPN::control_message)
 				return false;
+
 			if (${msg.tcp})
 				{
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
@@ -469,7 +510,13 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
-			if (seen_control_orig && seen_control_resp && !bro_analyzer()->ProtocolConfirmed())
+			if ( !seen_handshake )
+				return false;
+
+			if (!seen_control_orig || !seen_control_resp)
+				return false;
+
+			if (!bro_analyzer()->ProtocolConfirmed())
 				{
 				bro_analyzer()->ProtocolConfirmation();
 				}
