@@ -1,3 +1,4 @@
+v0.0.5 - Added more handshake detection logic.
 v0.0.4 - Disabled debugging by default.
 v0.0.3 - Added zkg.meta description.
 v0.0.2 - Fixed version number file.
