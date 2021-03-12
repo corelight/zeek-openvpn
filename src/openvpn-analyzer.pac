@@ -158,7 +158,7 @@ refine connection OpenVPN_Conn += {
 
 			if ( !::OpenVPN::control_message)
 				return false;
-				
+
 			if (${msg.tcp})
 				{
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
