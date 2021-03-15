@@ -160,7 +160,10 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_CONTROL_SOFT_RESET_V1 )
 			{
 			if ( !seen_handshake )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
 				return false;
+				}
 
 			if ( !::OpenVPN::control_message)
 				return false;
@@ -229,7 +232,10 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
 			if ( !seen_handshake )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
 				return false;
+				}
 
 			if (${msg.is_orig})
 				{
@@ -240,6 +246,11 @@ refine connection OpenVPN_Conn += {
 				if (seen_control_orig)
 					{
 					seen_control_resp = true;
+					}
+				else
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("Control_v1 packets came from server first."));
+					return false;
 					}
 				}
 
@@ -310,7 +321,11 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_ACK_V1 )
 			{
 			if ( !seen_handshake )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
 				return false;
+				}
+
 			if ( !::OpenVPN::ack_message)
 				return false;
 			auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::AckMsg);
@@ -338,10 +353,16 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
 			if ( !seen_handshake )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
 				return false;
+				}
 
 			if (!seen_control_orig || !seen_control_resp)
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen TLS information."));
 				return false;
+				}
 
 			if (!bro_analyzer()->ProtocolConfirmed())
 				{
@@ -523,10 +544,16 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
 			if ( !seen_handshake )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
 				return false;
+				}
 
 			if (!seen_control_orig || !seen_control_resp)
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen TLS information."));
 				return false;
+				}
 
 			if (!bro_analyzer()->ProtocolConfirmed())
 				{
