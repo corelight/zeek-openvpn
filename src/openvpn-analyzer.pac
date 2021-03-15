@@ -12,7 +12,10 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V1 )
 			{
 			if ( !${msg.is_orig} )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should not see client reset in !is_orig"));
 				return false;
+				}
 
 			seen_reset_client = true;
 
@@ -83,7 +86,10 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V1 )
 			{
 			if ( ${msg.is_orig} || !seen_reset_client )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should not see server reset in is_orig or haven't seen client reset."));
 				return false;
+				}
 
 			seen_handshake = true;
 
@@ -369,7 +375,10 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V2 )
 			{
 			if ( !${msg.is_orig} )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should not see client reset in !is_orig"));
 				return false;
+				}
 
 			seen_reset_client = true;
 
@@ -440,7 +449,10 @@ refine connection OpenVPN_Conn += {
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V2 )
 			{
 			if ( ${msg.is_orig} || !seen_reset_client )
+				{
+				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should not see server reset in is_orig or haven't seen client reset."));
 				return false;
+				}
 
 			seen_handshake = true;
 
