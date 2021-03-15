@@ -6,6 +6,11 @@ const tcp_ports = { 443/tcp };
 redef likely_server_ports += { ports, tcp_ports };
 
 export {
+	## Set to true to disable the analyzer after the handshake is detected.
+	## This helps reduce processing if you will not look at all of the OpenVPN
+	## traffic.
+	option disable_analyzer_after_detection = T;
+
 	## The record type which contains OpenVPN info.
 	type Info: record {
 		## The analyzer ID used for the analyzer instance attached
@@ -31,6 +36,15 @@ event protocol_confirmation(c: connection, atype: Analyzer::Tag, aid: count) &pr
 	if ( atype == Analyzer::ANALYZER_OPENVPN || atype == Analyzer::ANALYZER_OPENVPNHMAC || atype == Analyzer::ANALYZER_OPENVPNTCP || atype == Analyzer::ANALYZER_OPENVPNTCPHMAC )
 		{
 		c$openvpn$analyzer_id = aid;
+		}
+	}
+
+event OpenVPN::data_message(c: connection, is_orig: bool, msg: OpenVPN::DataMsg)
+	{
+	if (disable_analyzer_after_detection == T && c?$openvpn && c$openvpn?$analyzer_id)
+		{
+		disable_analyzer(c$id, c$openvpn$analyzer_id);
+		delete c$openvpn$analyzer_id;
 		}
 	}
 
