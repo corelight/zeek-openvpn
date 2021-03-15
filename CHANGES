@@ -1,3 +1,5 @@
+v0.0.9 - Added more protocolviolation logic.
+v0.0.8 - Anchor the signatures in dpd.sig.
 v0.0.7 - Disable analyzer after detection by default.  Added option to continue analyzing data if desired.
 v0.0.6 - Added protocolviolation for optimization.
 v0.0.5 - Added more handshake detection logic.
