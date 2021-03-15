@@ -153,7 +153,7 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !seen_handshake )
 				{
-				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
+				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
 				return false;
 				}
 
@@ -221,7 +221,7 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !seen_handshake )
 				{
-				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
+				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
 				return false;
 				}
 
@@ -237,7 +237,7 @@ refine connection OpenVPN_Conn += {
 					}
 				else
 					{
-					bro_analyzer()->ProtocolViolation(zeek::util::fmt("Control_v1 packets came from server first."));
+					bro_analyzer()->ProtocolViolation(fmt("Control_v1 packets came from server first."));
 					return false;
 					}
 				}
@@ -306,7 +306,7 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !seen_handshake )
 				{
-				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
+				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
 				return false;
 				}
 
@@ -336,13 +336,13 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !seen_handshake )
 				{
-				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
+				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
 				return false;
 				}
 
 			if (!seen_control_orig || !seen_control_resp)
 				{
-				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen TLS information."));
+				bro_analyzer()->ProtocolViolation(fmt("Should have seen TLS information."));
 				return false;
 				}
 
@@ -519,13 +519,13 @@ refine connection OpenVPN_Conn += {
 			{
 			if ( !seen_handshake )
 				{
-				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen a handshake."));
+				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
 				return false;
 				}
 
 			if (!seen_control_orig || !seen_control_resp)
 				{
-				bro_analyzer()->ProtocolViolation(zeek::util::fmt("Should have seen TLS information."));
+				bro_analyzer()->ProtocolViolation(fmt("Should have seen TLS information."));
 				return false;
 				}
 
