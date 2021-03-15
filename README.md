@@ -40,7 +40,7 @@ New events for this plugin are found in [events.bif](src/events.bif).
 The arguments to the events can be found in [types.zeek](scripts/types.zeek).
 
 By default the analyzer will disable itself after the OpenVPN handshake detection
-so as to not to use up additional CPU cycles, but you can set the following variable to false
+so as to not use up additional CPU cycles, but you can set the following variable to false
 to analyze the whole connection instead:
 
 ```
