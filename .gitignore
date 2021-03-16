@@ -1,4 +1,5 @@
 build
 .state
 .idea/
+.DS_Store
 cmake-build-debug/
