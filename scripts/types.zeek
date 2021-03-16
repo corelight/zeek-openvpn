@@ -15,8 +15,6 @@ export {
 		packet_id				:	count &optional;
 		## The amount of data
 		data_len				:	count;
-		## The type of parsed OpenVPN message.
-		msg_type				:	count;
 	};
 
 	type AckMsg: record {
@@ -30,8 +28,6 @@ export {
 		packet_id_ack_array		:	vector of count &optional;
 		## Remote session ID
 		remote_session_id		:	string &optional;
-		## The type of parsed OpenVPN message.
-		msg_type				:	count;
 	};
 
 	type DataMsg: record {
@@ -43,8 +39,6 @@ export {
 		data_len				:	count;
 		## Peer ID
 		peer_id		    		: 	string &optional;
-		## The type of parsed OpenVPN message.
-		msg_type				:	count;
 	};
 
 }

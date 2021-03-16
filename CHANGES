@@ -1,3 +1,4 @@
+v0.0.10 - Removed a variable from a record used in the events.
 v0.0.9 - Added more protocolviolation logic.
 v0.0.8 - Anchor the signatures in dpd.sig.
 v0.0.7 - Disable analyzer after detection by default.  Added option to continue analyzing data if desired.

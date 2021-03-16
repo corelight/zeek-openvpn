@@ -43,8 +43,6 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_hard_reset_client_v1.tcp.ssl_data}.length()));
 
-				rv->Assign(7, val_mgr->GetCount(1));
-
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
 															${msg.is_orig}, std::move(rv));
@@ -69,8 +67,6 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(5, val_mgr->GetCount(${msg.rec.control_hard_reset_client_v1.udp.packet_id}));
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_hard_reset_client_v1.udp.ssl_data}.length()));
-
-				rv->Assign(7, val_mgr->GetCount(1));
 
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
@@ -113,8 +109,6 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_hard_reset_server_v1.tcp.ssl_data}.length()));
 
-				rv->Assign(7, val_mgr->GetCount(2));
-
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
 															${msg.is_orig}, std::move(rv));
@@ -139,8 +133,6 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(5, val_mgr->GetCount(${msg.rec.control_hard_reset_server_v1.udp.packet_id}));
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_hard_reset_server_v1.udp.ssl_data}.length()));
-
-				rv->Assign(7, val_mgr->GetCount(2));
 
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
@@ -181,8 +173,6 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_soft_reset_v1.tcp.ssl_data}.length()));
 
-				rv->Assign(7, val_mgr->GetCount(3));
-
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
 															${msg.is_orig}, std::move(rv));
@@ -207,8 +197,6 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(5, val_mgr->GetCount(${msg.rec.control_soft_reset_v1.udp.packet_id}));
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_soft_reset_v1.udp.ssl_data}.length()));
-
-				rv->Assign(7, val_mgr->GetCount(3));
 
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
@@ -266,8 +254,6 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_v1.tcp.ssl_data}.length()));
 
-				rv->Assign(7, val_mgr->GetCount(4));
-
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
 															${msg.is_orig}, std::move(rv));
@@ -292,8 +278,6 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(5, val_mgr->GetCount(${msg.rec.control_v1.udp.packet_id}));
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_v1.udp.ssl_data}.length()));
-
-				rv->Assign(7, val_mgr->GetCount(4));
 
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
@@ -323,8 +307,6 @@ refine connection OpenVPN_Conn += {
 			rv->Assign(3, acks);
 
 			rv->Assign(4, new StringVal(${msg.rec.ack_v1.remote_session_id}.length(), (const char*)${msg.rec.ack_v1.remote_session_id}.data()));
-
-			rv->Assign(5, val_mgr->GetCount(5));
 
 			BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 									   			        bro_analyzer()->Conn(),
@@ -367,8 +349,6 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(2, val_mgr->GetCount(${msg.rec.data_v1.udp.payload}.length()));
 				}
 
-			rv->Assign(4, val_mgr->GetCount(6));
-
 			BifEvent::OpenVPN::generate_data_message(bro_analyzer(),
 									   		   	     bro_analyzer()->Conn(),
 									   			     ${msg.is_orig}, std::move(rv));
@@ -409,8 +389,6 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_hard_reset_client_v2.tcp.ssl_data}.length()));
 
-				rv->Assign(7, val_mgr->GetCount(7));
-
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
 															${msg.is_orig}, std::move(rv));
@@ -435,8 +413,6 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(5, val_mgr->GetCount(${msg.rec.control_hard_reset_client_v2.udp.packet_id}));
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_hard_reset_client_v2.udp.ssl_data}.length()));
-
-				rv->Assign(7, val_mgr->GetCount(7));
 
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
@@ -479,8 +455,6 @@ refine connection OpenVPN_Conn += {
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_hard_reset_server_v2.tcp.ssl_data}.length()));
 
-				rv->Assign(7, val_mgr->GetCount(8));
-
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
 															${msg.is_orig}, std::move(rv));
@@ -505,8 +479,6 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(5, val_mgr->GetCount(${msg.rec.control_hard_reset_server_v2.udp.packet_id}));
 
 				rv->Assign(6, val_mgr->GetCount(${msg.rec.control_hard_reset_server_v2.udp.ssl_data}.length()));
-
-				rv->Assign(7, val_mgr->GetCount(8));
 
 				BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 															bro_analyzer()->Conn(),
@@ -551,8 +523,6 @@ refine connection OpenVPN_Conn += {
 				rv->Assign(2, val_mgr->GetCount(${msg.rec.data_v2.udp.payload}.length()));
 				rv->Assign(3, new StringVal(${msg.rec.data_v2.udp.peer_id}.length(), (const char*)${msg.rec.data_v2.udp.peer_id}.data()));
 				}
-
-			rv->Assign(4, val_mgr->GetCount(9));
 
 			BifEvent::OpenVPN::generate_control_message(bro_analyzer(),
 									   			        bro_analyzer()->Conn(),
