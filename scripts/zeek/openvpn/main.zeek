@@ -6,7 +6,7 @@ const tcp_ports = { 443/tcp };
 redef likely_server_ports += { ports, tcp_ports };
 
 export {
-	## Set to true to disable the analyzer after the handshake is detected.
+	## Set to true to disable the analyzer after the protocol is confirmed.
 	## This helps reduce processing if you will not look at all of the OpenVPN
 	## traffic.
 	option disable_analyzer_after_detection = T;
