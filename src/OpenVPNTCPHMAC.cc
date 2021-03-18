@@ -7,7 +7,7 @@
 namespace analyzer::openvpn::tcp::hmac {
 
 OpenVPN_Analyzer::OpenVPN_Analyzer(Connection* c)
-	: ::analyzer::tcp::TCP_ApplicationAnalyzer("OpenVPNTCPHMAC", c)
+	: ::analyzer::tcp::TCP_ApplicationAnalyzer("OpenVPN_TCP_HMAC", c)
 	{
 	had_gap = false;
 	interp = new binpac::OpenVPNTCPHMAC::OpenVPN_Conn(this);

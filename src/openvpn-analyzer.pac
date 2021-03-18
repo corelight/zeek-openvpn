@@ -1,24 +1,14 @@
 refine connection OpenVPN_Conn += {
 
-	%member{
-		bool seen_control_orig = false;
-		bool seen_control_resp = false;
-		bool seen_reset_client = false;
-		bool seen_handshake = false;
-	%}
-
 	function proc_openvpn_message(msg: OpenVPNRecord): bool
 		%{
+		if (!bro_analyzer()->ProtocolConfirmed())
+			{
+			bro_analyzer()->ProtocolConfirmation();
+			}
+
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V1 )
 			{
-			if ( !${msg.is_orig} )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should not see client reset in !is_orig"));
-				return false;
-				}
-
-			seen_reset_client = true;
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -77,14 +67,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V1 )
 			{
-			if ( ${msg.is_orig} || !seen_reset_client )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should not see server reset in is_orig or haven't seen client reset."));
-				return false;
-				}
-
-			seen_handshake = true;
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -143,12 +125,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_SOFT_RESET_V1 )
 			{
-			if ( !seen_handshake )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
-				return false;
-				}
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -207,29 +183,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
-			if ( !seen_handshake )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
-				return false;
-				}
-
-			if (${msg.is_orig})
-				{
-				seen_control_orig = true;
-				}
-			else
-				{
-				if (seen_control_orig)
-					{
-					seen_control_resp = true;
-					}
-				else
-					{
-					bro_analyzer()->ProtocolViolation(fmt("Control_v1 packets came from server first."));
-					return false;
-					}
-				}
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -288,12 +241,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_ACK_V1 )
 			{
-			if ( !seen_handshake )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
-				return false;
-				}
-
 			if ( !::OpenVPN::ack_message)
 				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::AckMsg);
@@ -316,23 +263,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if ( !seen_handshake )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
-				return false;
-				}
-
-			if (!seen_control_orig || !seen_control_resp)
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should have seen TLS information."));
-				return false;
-				}
-
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::data_message)
 				return false;
 
@@ -357,14 +287,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V2 )
 			{
-			if ( !${msg.is_orig} )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should not see client reset in !is_orig"));
-				return false;
-				}
-
-			seen_reset_client = true;
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -423,14 +345,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V2 )
 			{
-			if ( ${msg.is_orig} || !seen_reset_client )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should not see server reset in is_orig or haven't seen client reset."));
-				return false;
-				}
-
-			seen_handshake = true;
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -489,23 +403,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
-			if ( !seen_handshake )
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should have seen a handshake."));
-				return false;
-				}
-
-			if (!seen_control_orig || !seen_control_resp)
-				{
-				bro_analyzer()->ProtocolViolation(fmt("Should have seen TLS information."));
-				return false;
-				}
-
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::data_message)
 				return false;
 				

@@ -33,7 +33,7 @@ function set_session(c: connection)
 event protocol_confirmation(c: connection, atype: Analyzer::Tag, aid: count) &priority=5
 	{
 	set_session(c);
-	if ( atype == Analyzer::ANALYZER_OPENVPN || atype == Analyzer::ANALYZER_OPENVPNHMAC || atype == Analyzer::ANALYZER_OPENVPNTCP || atype == Analyzer::ANALYZER_OPENVPNTCPHMAC )
+	if ( atype == Analyzer::ANALYZER_OPENVPN_UDP || atype == Analyzer::ANALYZER_OPENVPN_UDP_HMAC || atype == Analyzer::ANALYZER_OPENVPN_TCP || atype == Analyzer::ANALYZER_OPENVPN_TCP_HMAC )
 		{
 		c$openvpn$analyzer_id = aid;
 		}
@@ -47,11 +47,3 @@ event OpenVPN::data_message(c: connection, is_orig: bool, msg: OpenVPN::DataMsg)
 		delete c$openvpn$analyzer_id;
 		}
 	}
-
-#event zeek_init() &priority=5
-#	{
-#	Analyzer::register_for_ports(Analyzer::ANALYZER_OPENVPN, ports);
-#	Analyzer::register_for_ports(Analyzer::ANALYZER_OPENVPNHMAC, ports);
-#	Analyzer::register_for_ports(Analyzer::ANALYZER_OPENVPNTCP, tcp_ports);
-#	Analyzer::register_for_ports(Analyzer::ANALYZER_OPENVPNTCPHMAC, tcp_ports);
-#	}
