@@ -7,7 +7,7 @@
 namespace analyzer::openvpn {
 
 OpenVPN_Analyzer::OpenVPN_Analyzer(Connection* c)
-	: ::analyzer::Analyzer("OpenVPN", c)
+	: ::analyzer::Analyzer("OpenVPN_UDP", c)
 	{
 	interp = new binpac::OpenVPN::OpenVPN_Conn(this);
 	}
