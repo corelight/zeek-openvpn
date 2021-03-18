@@ -1,3 +1,4 @@
+v0.0.13 - Made sure all control messages do not have ssl data unless it's a control v1.
 v0.0.12 - Fixed a logic bug with protocolconfirm call.
 v0.0.11 - Made service field more readable.  Removed detection of full handshake.
 v0.0.10 - Removed a variable from a record used in the events.
