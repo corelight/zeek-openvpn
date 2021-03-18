@@ -2,13 +2,13 @@ refine connection OpenVPN_Conn += {
 
 	function proc_openvpn_message(msg: OpenVPNRecord): bool
 		%{
-		if (!bro_analyzer()->ProtocolConfirmed())
-			{
-			bro_analyzer()->ProtocolConfirmation();
-			}
-
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V1 )
 			{
+			if (!bro_analyzer()->ProtocolConfirmed())
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -67,6 +67,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V1 )
 			{
+			if (!bro_analyzer()->ProtocolConfirmed())
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -125,6 +130,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_SOFT_RESET_V1 )
 			{
+			if (!bro_analyzer()->ProtocolConfirmed())
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -183,6 +193,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_V1 )
 			{
+			if (!bro_analyzer()->ProtocolConfirmed())
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -241,6 +256,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_ACK_V1 )
 			{
+			if (!bro_analyzer()->ProtocolConfirmed())
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			if ( !::OpenVPN::ack_message)
 				return false;
 			auto rv = new RecordVal(BifType::Record::OpenVPN::AckMsg);
@@ -263,6 +283,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
+			if (!bro_analyzer()->ProtocolConfirmed())
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			if ( !::OpenVPN::data_message)
 				return false;
 
@@ -298,10 +323,10 @@ refine connection OpenVPN_Conn += {
 					return false;
 					}
 
-				auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
-				rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
-				rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
-				rv->Assign(2, new StringVal(${msg.rec.control_hard_reset_client_v2.tcp.session_id}.length(), (const char*)${msg.rec.control_hard_reset_client_v2.tcp.session_id}.data()));
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
 
 				auto acks = new VectorVal(index_vec);
 				for ( size_t i=0; i < ${msg.rec.control_hard_reset_client_v2.tcp.packet_id_array}->size(); ++i )
@@ -327,6 +352,11 @@ refine connection OpenVPN_Conn += {
 					{
 					bro_analyzer()->ProtocolViolation(fmt("client reset should not have ssl_data."));
 					return false;
+					}
+
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
 					}
 
 				auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
@@ -357,6 +387,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V2 )
 			{
+			if (!bro_analyzer()->ProtocolConfirmed())
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			if ( !::OpenVPN::control_message)
 				return false;
 
@@ -387,6 +422,11 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
+
 				auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 				rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
@@ -415,6 +455,11 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
+			if (!bro_analyzer()->ProtocolConfirmed())
+				{
+				bro_analyzer()->ProtocolConfirmation();
+				}
+
 			if ( !::OpenVPN::data_message)
 				return false;
 				
