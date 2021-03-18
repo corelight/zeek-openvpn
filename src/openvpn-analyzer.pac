@@ -292,6 +292,12 @@ refine connection OpenVPN_Conn += {
 
 			if (${msg.tcp})
 				{
+				if (${msg.rec.control_hard_reset_client_v2.tcp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(fmt("client reset should not have ssl_data."));
+					return false;
+					}
+
 				auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 				rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
@@ -317,6 +323,12 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
+				if (${msg.rec.control_hard_reset_client_v2.udp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(fmt("client reset should not have ssl_data."));
+					return false;
+					}
+
 				auto rv = new RecordVal(BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, val_mgr->GetCount(${msg.opcode}));
 				rv->Assign(1, val_mgr->GetCount(${msg.key_id}));
