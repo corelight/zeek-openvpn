@@ -1,3 +1,4 @@
+v0.0.12 - Fixed a logic bug with protocolconfirm call.
 v0.0.11 - Made service field more readable.  Removed detection of full handshake.
 v0.0.10 - Removed a variable from a record used in the events.
 v0.0.9 - Added more protocolviolation logic.
