@@ -313,7 +313,7 @@ refine connection OpenVPN_Conn += {
 				{
 				if (${msg.rec.control_hard_reset_client_v2.tcp.ssl_data}.length() != 0)
 					{
-					bro_analyzer()->ProtocolViolation(fmt("client reset should not have ssl_data."));
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("client reset should not have ssl_data."));
 					return false;
 					}
 
@@ -346,7 +346,7 @@ refine connection OpenVPN_Conn += {
 				{
 				if (${msg.rec.control_hard_reset_client_v2.udp.ssl_data}.length() != 0)
 					{
-					bro_analyzer()->ProtocolViolation(fmt("client reset should not have ssl_data."));
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("client reset should not have ssl_data."));
 					return false;
 					}
 
