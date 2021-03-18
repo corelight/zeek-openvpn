@@ -4,16 +4,22 @@ refine connection OpenVPN_Conn += {
 		%{
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_CLIENT_V1 )
 			{
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
 			if (${msg.tcp})
 				{
+				if (${msg.rec.control_hard_reset_client_v1.tcp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("should not have ssl_data."));
+					return false;
+					}
+
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -41,6 +47,17 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
+				if (${msg.rec.control_hard_reset_client_v1.udp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("should not have ssl_data."));
+					return false;
+					}
+
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -71,16 +88,22 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V1 )
 			{
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
 			if (${msg.tcp})
 				{
+				if (${msg.rec.control_hard_reset_server_v1.tcp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("should not have ssl_data."));
+					return false;
+					}
+
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -108,6 +131,17 @@ refine connection OpenVPN_Conn += {
 		 		}
 			else
 				{
+				if (${msg.rec.control_hard_reset_server_v1.udp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("should not have ssl_data."));
+					return false;
+					}
+
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -138,16 +172,22 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_SOFT_RESET_V1 )
 			{
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
 			if (${msg.tcp})
 				{
+				if (${msg.rec.control_soft_reset_v1.tcp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("should not have ssl_data."));
+					return false;
+					}
+
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -175,6 +215,17 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
+				if (${msg.rec.control_soft_reset_v1.udp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("should not have ssl_data."));
+					return false;
+					}
+
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -272,11 +323,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_ACK_V1 )
 			{
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::ack_message)
 				return false;
 
@@ -302,11 +348,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V1 )
 			{
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::data_message)
 				return false;
 
@@ -415,16 +456,22 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_CONTROL_HARD_RESET_SERVER_V2 )
 			{
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::control_message)
 				return false;
 
 			if (${msg.tcp})
 				{
+				if (${msg.rec.control_hard_reset_server_v2.tcp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("should not have ssl_data."));
+					return false;
+					}
+
+				if (!bro_analyzer()->ProtocolConfirmed())
+					{
+					bro_analyzer()->ProtocolConfirmation();
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -452,6 +499,12 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
+				if (${msg.rec.control_hard_reset_server_v2.udp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(zeek::util::fmt("should not have ssl_data."));
+					return false;
+					}
+
 				if (!bro_analyzer()->ProtocolConfirmed())
 					{
 					bro_analyzer()->ProtocolConfirmation();
@@ -487,11 +540,6 @@ refine connection OpenVPN_Conn += {
 
 		if ( ${msg.opcode} == P_DATA_V2 )
 			{
-			if (!bro_analyzer()->ProtocolConfirmed())
-				{
-				bro_analyzer()->ProtocolConfirmation();
-				}
-
 			if ( !::OpenVPN::data_message)
 				return false;
 				
