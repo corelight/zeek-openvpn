@@ -7,7 +7,7 @@
 namespace analyzer::openvpn::hmac {
 
 OpenVPN_Analyzer::OpenVPN_Analyzer(Connection* c)
-	: ::analyzer::Analyzer("OpenVPNHMAC", c)
+	: ::analyzer::Analyzer("OpenVPN_UDP_HMAC", c)
 	{
 	interp = new binpac::OpenVPNHMAC::OpenVPN_Conn(this);
 	}
