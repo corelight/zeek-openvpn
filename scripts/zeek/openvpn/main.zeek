@@ -9,7 +9,7 @@ export {
 	## Set to true to disable the analyzer after the protocol is confirmed.
 	## This helps reduce processing if you will not look at all of the OpenVPN
 	## traffic.
-	option disable_analyzer_after_detection = T;
+	option disable_analyzer_after_detection = F;
 
 	## The record type which contains OpenVPN info.
 	type Info: record {
