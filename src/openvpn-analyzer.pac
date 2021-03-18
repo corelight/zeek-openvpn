@@ -311,6 +311,12 @@ refine connection OpenVPN_Conn += {
 
 			if (${msg.tcp})
 				{
+				if (${msg.rec.control_hard_reset_client_v2.tcp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(fmt("client reset should not have ssl_data."));
+					return false;
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
@@ -338,6 +344,12 @@ refine connection OpenVPN_Conn += {
 				}
 			else
 				{
+				if (${msg.rec.control_hard_reset_client_v2.udp.ssl_data}.length() != 0)
+					{
+					bro_analyzer()->ProtocolViolation(fmt("client reset should not have ssl_data."));
+					return false;
+					}
+
 				auto rv = zeek::make_intrusive<zeek::RecordVal>(zeek::BifType::Record::OpenVPN::ControlMsg);
 				rv->Assign(0, zeek::val_mgr->Count(${msg.opcode}));
 				rv->Assign(1, zeek::val_mgr->Count(${msg.key_id}));
