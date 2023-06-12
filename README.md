@@ -2,6 +2,8 @@
 zeek::openvpn
 =================================
 
+THIS IS DEPRECATED IN FAVOR OF https://github.com/corelight/zeek-spicy-openvpn
+
 A plugin to detect and parse OpenVPN in the following modes:
 
 - UDP w/ TLS
